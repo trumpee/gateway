@@ -1,0 +1,26 @@
+﻿name: Build and Test Backend Solution
+
+on:
+  push:
+    paths:
+      - '**/src/**'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ secrets.DOTNET_VERSION }}
+
+      - name: Build Solution
+        run:  dotnet build ./Gateway.sln --configuration ${{ secrets.BUILD_CONFIGURATION }}
+
+      - name: Test
+        run: dotnet test --no-build --configuration ${{ secrets.BUILD_CONFIGURATION }} --verbosity normal ./Gateway.sln
