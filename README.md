@@ -6,5 +6,5 @@
   <br/>
   <br/>
   
-  <img width="250" height="250" src="https://github.com/trumpee/trumpee-repo-template/assets/67170413/5ffb8aa7-4f54-48c5-bf1b-6a527fcd280d" alt="Trumpee Logo"/>
+  <img width="250" height="250" src="https://github.com/trumpee/gateway/assets/67170413/1641a148-c069-4289-8846-b7f1084ff5c8" alt="Trumpee Logo"/>
 </p>
