@@ -9,6 +9,7 @@
 
     <ItemGroup>
         <PackageReference Include="FastEndpoints" Version="5.19.2" />
+        <PackageReference Include="FastEndpoints.Swagger" Version="5.19.2" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.13"/>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0"/>
     </ItemGroup>
