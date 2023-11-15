@@ -3,7 +3,7 @@ using FastEndpoints;
 
 namespace Api.Endpoints.Templates;
 
-internal class UpdateTemplateEndpoint : Endpoint<UpdateTemplateRequest, ApiResponse<TemplateResponse>>
+internal sealed class UpdateTemplateEndpoint : Endpoint<UpdateTemplateRequest, ApiResponse<TemplateResponse>>
 {
     public override void Configure()
     {

@@ -4,7 +4,7 @@ using FastEndpoints;
 
 namespace Api.Swagger.Templates;
 
-internal class UpdateTemplateSummary : Summary<UpdateTemplateEndpoint, UpdateTemplateRequest>
+internal sealed class UpdateTemplateSummary : Summary<UpdateTemplateEndpoint, UpdateTemplateRequest>
 {
     private const string TemplateName = "Updated template title";
 

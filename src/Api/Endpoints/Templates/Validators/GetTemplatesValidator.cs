@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace Api.Endpoints.Templates.Validators;
 
-public class GetTemplateQueryValidation : Validator<GetTemplatesRequest>
+internal class GetTemplateQueryValidation : Validator<GetTemplatesRequest>
 {
     public GetTemplateQueryValidation()
     {

@@ -5,7 +5,7 @@ using FastEndpoints;
 
 namespace Api.Swagger.Templates;
 
-internal class GetTemplatesSummary : Summary<GetTemplatesEndpoint>
+internal sealed class GetTemplatesSummary : Summary<GetTemplatesEndpoint>
 {
     private static ApiResponse<TemplateResponse[]> Successful =>
         ApiResponse<TemplateResponse[]>.Success(

@@ -5,7 +5,7 @@ using FastEndpoints;
 
 namespace Api.Swagger.Templates;
 
-public class DeleteTemplatesSummary : Summary<DeleteTemplatesEndpoint>
+internal sealed class DeleteTemplatesSummary : Summary<DeleteTemplatesEndpoint>
 {
     private static ApiResponse Successful =>
         ApiResponse.Success();

@@ -4,7 +4,7 @@ using FastEndpoints;
 
 namespace Api.Endpoints.Templates;
 
-public sealed class DeleteTemplatesEndpoint : Endpoint<DeleteTemplatesRequest>
+internal sealed class DeleteTemplatesEndpoint : Endpoint<DeleteTemplatesRequest>
 {
     public override void Configure()
     {

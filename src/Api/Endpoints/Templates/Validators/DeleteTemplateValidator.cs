@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace Api.Endpoints.Templates.Validators;
 
-public class DeleteTemplateCommandValidation : Validator<DeleteTemplatesRequest>
+internal class DeleteTemplateCommandValidation : Validator<DeleteTemplatesRequest>
 {
     public DeleteTemplateCommandValidation()
     {

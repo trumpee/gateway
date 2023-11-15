@@ -4,7 +4,7 @@ using FastEndpoints;
 
 namespace Api.Endpoints.Templates;
 
-internal class CreateTemplateEndpoint : Endpoint<CreateTemplateRequest, ApiResponse<TemplateResponse>>
+internal sealed class CreateTemplateEndpoint : Endpoint<CreateTemplateRequest, ApiResponse<TemplateResponse>>
 {
     public override void Configure()
     {

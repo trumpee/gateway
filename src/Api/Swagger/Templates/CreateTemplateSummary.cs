@@ -5,7 +5,7 @@ using FastEndpoints;
 
 namespace Api.Swagger.Templates;
 
-internal class CreateTemplateSummary : Summary<CreateTemplateEndpoint, CreateTemplateRequest>
+internal sealed class CreateTemplateSummary : Summary<CreateTemplateEndpoint, CreateTemplateRequest>
 {
     private const string TemplateName = "Test notification template";
 
