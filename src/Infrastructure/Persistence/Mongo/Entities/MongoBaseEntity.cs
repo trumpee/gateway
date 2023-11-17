@@ -2,7 +2,7 @@
 
 namespace Infrastructure.Persistence.Mongo.Entities;
 
-internal record MongoBaseEntity
+public record MongoBaseEntity
 {
     public ObjectId Id { get; set; }
 }

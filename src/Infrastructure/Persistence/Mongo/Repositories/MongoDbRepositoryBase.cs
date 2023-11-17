@@ -23,11 +23,18 @@ internal abstract class MongoDbRepositoryBase<T> : IMongoRepository<T>
 
     public ObjectId GetObjectId() => ObjectId.GenerateNewId();
 
-    public async Task<IAsyncEnumerable<T>> FilterBy(Specification<T> spec)
+    public async Task<IAsyncEnumerable<T>> FilterBy(Specification<T> spec, int page, int pageSize)
     {
-        var findOp = _collection.Find(spec.ToExpression() ?? FilterDefinition<T>.Empty);
+        var pageIndex = page - 1;
+        var findOp = _collection.Find(spec.ToExpression() ?? FilterDefinition<T>.Empty)
+            .Limit(pageSize)
+            .Skip(pageIndex * pageSize);
+
         return (await findOp.ToCursorAsync(CancellationToken.None)).ToAsyncEnumerable();
     }
+
+    public Task<T?> FirstOrDefault(string id)
+        => _collection.Find(x => x.Id.Equals(id)).FirstOrDefaultAsync()!;
 
     public Task<T?> FirstOrDefault(Specification<T> spec)
         => _collection.Find(spec.ToExpression()).FirstOrDefaultAsync()!;
@@ -39,7 +46,7 @@ internal abstract class MongoDbRepositoryBase<T> : IMongoRepository<T>
     public Task InsertMany(IEnumerable<T> documents)
         => _collection.InsertManyAsync(documents);
 
-    public Task DeleteOne(ObjectId id)
+    public Task DeleteOne(string id)
         => _collection.FindOneAndDeleteAsync(x => x.Id.Equals(id));
 
     public Task DeleteBySpec(Specification<T> spec)
