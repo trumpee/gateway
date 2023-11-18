@@ -36,9 +36,14 @@ internal class TemplatesService : ITemplatesService
         return dto;
     }
 
-    public Task DeleteTemplate(string id, CancellationToken ct)
+    public Task DeleteTemplates(string[] ids, string[] names, CancellationToken ct)
     {
-        return _templatesRepository.DeleteOne(id);
+        ct.ThrowIfCancellationRequested();
+
+        var deletionSpec = TemplateSpecs.ByIds(ids) &
+                           TemplateSpecs.ByNames(names);
+
+        return _templatesRepository.DeleteBySpec(deletionSpec);
     }
 
     public async IAsyncEnumerable<ErrorOr<TemplateDto>> GetTemplates(
@@ -51,5 +56,26 @@ internal class TemplatesService : ITemplatesService
         {
             yield return TemplateMapper.ToDto(template);
         }
+    }
+
+    public async Task<ErrorOr<TemplateDto>> UpdateTemplate(TemplateDto dto, CancellationToken ct)
+    {
+        if (dto.Id is null)
+        {
+            ArgumentException.ThrowIfNullOrEmpty(dto.Id);
+        }
+
+        await _templatesRepository.Replace(TemplateMapper.ToEntity(dto));
+
+        var updatedDocument = await _templatesRepository
+            .FirstOrDefault(TemplateSpecs.ById(dto.Id));
+        if (updatedDocument is null)
+        {
+            return Error.Unexpected(
+                "Template.UpdateFailed",
+                $"Template with ID {dto.Id} was not updated");
+        }
+
+        return TemplateMapper.ToDto(updatedDocument);
     }
 }
