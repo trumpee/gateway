@@ -52,6 +52,8 @@ internal abstract class MongoDbRepositoryBase<T> : IMongoRepository<T>
     public Task DeleteBySpec(Specification<T> spec)
         => _collection.DeleteManyAsync(spec.ToExpression());
 
-    public async Task<ObjectId> Replace(T entity)
-        => (await _collection.ReplaceOneAsync(e => e.Id.Equals(entity.Id), entity)).UpsertedId.AsObjectId;
+    public Task Replace(T entity) =>
+        _collection.ReplaceOneAsync(
+            e => e.Id.Equals(entity.Id),
+            entity, cancellationToken: CancellationToken.None);
 }

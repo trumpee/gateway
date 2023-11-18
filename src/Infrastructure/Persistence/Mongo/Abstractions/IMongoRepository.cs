@@ -17,5 +17,5 @@ public interface IMongoRepository<TEntity>
     Task DeleteOne(string id);
     Task DeleteBySpec(Specification<TEntity> spec);
 
-    Task<ObjectId> Replace(TEntity entity);
+    Task Replace(TEntity entity);
 }
