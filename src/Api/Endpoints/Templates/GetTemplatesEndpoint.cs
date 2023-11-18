@@ -1,12 +1,24 @@
-﻿using Api.Models.Requests;
+﻿using Api.Extensions;
+using Api.Mappers.Templates;
+using Api.Models.Requests;
 using Api.Models.Responses;
+using Core.Abstractions;
+using Core.Models.Templates;
+using ErrorOr;
 using FastEndpoints;
 
 namespace Api.Endpoints.Templates;
 
 internal sealed class GetTemplatesEndpoint :
-    Endpoint<GetTemplatesRequest, ApiResponse<TemplateResponse[]>>
+    Endpoint<GetTemplatesRequest, ApiResponse<TemplateResponse[]>, GetTemplateMapper>
 {
+    private readonly ITemplatesService _templatesService;
+
+    public GetTemplatesEndpoint(ITemplatesService templatesService)
+    {
+        _templatesService = templatesService;
+    }
+
     public override void Configure()
     {
         Verbs(Http.GET);
@@ -23,8 +35,22 @@ internal sealed class GetTemplatesEndpoint :
             return;
         }
 
-        var empty = Array.Empty<TemplateResponse>();
-        var selectedTemplates = ApiResponse<TemplateResponse[]>.Success(empty);
-        await SendAsync(selectedTemplates, cancellation: ct);
+        var templatesStream = _templatesService.GetTemplates(Map.ToEntity(req), ct);
+        await SendEventStreamAsync("templates", MapChunk(templatesStream), ct);
     }
+
+    private IAsyncEnumerable<ApiResponse<TemplateResponse>> MapChunk(
+        IAsyncEnumerable<ErrorOr<TemplateDto>> templates)
+    {
+        return templates.Select(r => r.ToApiResponse(ToTemplateResponse));
+    }
+
+    private TemplateResponse ToTemplateResponse(TemplateDto dto)
+        => new()
+        {
+            Id = dto.Id!,
+            Name = dto.Name,
+            TextTemplate = dto.TextTemplate,
+            DataChunksDescription = dto.DataChunksDescription
+        };
 }

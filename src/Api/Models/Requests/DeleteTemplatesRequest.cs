@@ -2,6 +2,6 @@
 
 public record DeleteTemplatesRequest
 {
-    public string[]? Ids { get; set; }
-    public string[]? Names { get; set; }
+    public string[]? Ids { get; init; }
+    public string[]? Names { get; init; }
 }

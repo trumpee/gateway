@@ -1,11 +1,21 @@
-﻿using Api.Models.Requests;
+﻿using Api.Mappers.Templates;
+using Api.Models.Requests;
 using Api.Models.Responses;
+using Core.Abstractions;
 using FastEndpoints;
 
 namespace Api.Endpoints.Templates;
 
-internal sealed class CreateTemplateEndpoint : Endpoint<CreateTemplateRequest, ApiResponse<TemplateResponse>>
+internal sealed class CreateTemplateEndpoint :
+    Endpoint<CreateTemplateRequest, ApiResponse<TemplateResponse>, CreateTemplatesMapper>
 {
+    private readonly ITemplatesService _templatesService;
+
+    public CreateTemplateEndpoint(ITemplatesService templatesService)
+    {
+        _templatesService = templatesService;
+    }
+
     public override void Configure()
     {
         Verbs(Http.POST);
@@ -22,15 +32,10 @@ internal sealed class CreateTemplateEndpoint : Endpoint<CreateTemplateRequest, A
             return;
         }
 
-        var templateResponse = new TemplateResponse
-        {
-            Id = Guid.NewGuid().ToString("N"),
-            Name = req.Name,
-            TextTemplate = req.TextTemplate,
-            DataChunksDescription = req.DataChunksDescription
-        };
+        var dto = Map.ToEntity(req).Value;
 
-        var successResponse = ApiResponse<TemplateResponse>.Success(templateResponse);
-        await SendAsync(successResponse, cancellation: ct);
+        var errorOrTemplateDto = await _templatesService.CreateTemplate(dto, ct);
+        var apiResponse = Map.FromEntity(errorOrTemplateDto);
+        await SendAsync(apiResponse, cancellation: ct);
     }
 }

@@ -1,11 +1,19 @@
 ﻿using Api.Models.Requests;
 using Api.Models.Responses;
+using Core.Abstractions;
 using FastEndpoints;
 
 namespace Api.Endpoints.Templates;
 
 internal sealed class DeleteTemplatesEndpoint : Endpoint<DeleteTemplatesRequest>
 {
+    private readonly ITemplatesService _templatesService;
+
+    public DeleteTemplatesEndpoint(ITemplatesService templatesService)
+    {
+        _templatesService = templatesService;
+    }
+
     public override void Configure()
     {
         Verbs(Http.DELETE);
@@ -21,6 +29,11 @@ internal sealed class DeleteTemplatesEndpoint : Endpoint<DeleteTemplatesRequest>
             await SendAsync(response, StatusCodes.Status400BadRequest, ct);
             return;
         }
+
+        await _templatesService.DeleteTemplates(
+            req.Ids ?? Array.Empty<string>(),
+            req.Names ?? Array.Empty<string>(),
+            ct);
 
         await SendAsync(ApiResponse.Success(), cancellation: ct);
     }
