@@ -34,7 +34,8 @@ builder.Services.AddFastEndpoints(cfg =>
 var app = builder.Build();
 
 app.UseAuthorization();
-app.UseFastEndpoints()
+app.UseDefaultExceptionHandler()
+    .UseFastEndpoints()
     .UseSwaggerGen();
 
 app.Run();
