@@ -13,6 +13,17 @@ services:
         ports:
             - 23001:27017
 
+    gateway_api:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        restart: always
+        container_name: trumpee_gateway_api
+        networks:
+            - trumpee_backend_vpn
+        ports:
+            - 22001:22001
+
 networks:
     trumpee_backend_vpn:
         name: trumpee_backend_vpn
