@@ -2,7 +2,7 @@
 
 namespace Api.Endpoints;
 
-public class HealthzEndpoint : EndpointWithoutRequest
+internal sealed class HealthzEndpoint : EndpointWithoutRequest
 {
     public override void Configure()
     {

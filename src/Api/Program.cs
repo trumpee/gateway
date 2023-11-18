@@ -1,5 +1,6 @@
 ﻿using Core;
 using FastEndpoints;
+using FastEndpoints.Swagger;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authorization;
 
@@ -13,19 +14,27 @@ builder.Services.AddAuthorization(x =>
         .RequireAssertion(_ => true)
         .Build());
 
-builder.Services.AddFastEndpoints();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddFastEndpoints(cfg =>
+{
+    cfg.IncludeAbstractValidators = true;
+}).SwaggerDocument(opt =>
+{
+    opt.DocumentSettings = s =>
+    {
+        s.GenerateExamples = true;
+        s.Version = "v1";
+        s.Title = "gateway";
+    };
+
+    opt.ShortSchemaNames = true;
+    opt.EnableJWTBearerAuth = false;
+    opt.RemoveEmptyRequestSchema = true;
+});
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
 app.UseAuthorization();
-app.UseFastEndpoints();
+app.UseFastEndpoints()
+    .UseSwaggerGen();
 
 app.Run();

@@ -1,4 +1,6 @@
-﻿using Infrastructure.Persistence.Mongo.Configurations;
+﻿using Infrastructure.Persistence.Mongo.Abstractions;
+using Infrastructure.Persistence.Mongo.Configurations;
+using Infrastructure.Persistence.Mongo.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,6 +10,8 @@ public static class DependencyInjection
 {
     public static void AddPersistence(this IServiceCollection services, IConfiguration config)
     {
+        services.AddScoped<ITemplatesRepository, TemplatesRepository>();        
+
         services.AddMongoDb(config);
     }
 
