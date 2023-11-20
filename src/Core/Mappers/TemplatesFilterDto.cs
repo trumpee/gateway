@@ -9,6 +9,11 @@ internal static class TemplatesFilterMapper
 {
     internal static Specification<Template> MapToSpec(TemplatesFilterDto dto)
     {
+        if (dto.All is true)
+        {
+            return TemplateSpecs.All;
+        }
+
         var byNamesSpec = GetFilteringByNamesSpec(dto);
         var byIdsSpec = GetFilteringSpecByIds(dto);
 
@@ -22,7 +27,7 @@ internal static class TemplatesFilterMapper
             return byNamesSpec;
         }
 
-        return byIdsSpec;
+        return byIdsSpec!;
     }
 
     private static Specification<Template>? GetFilteringByNamesSpec(TemplatesFilterDto dto)

@@ -12,6 +12,7 @@ internal class GetTemplateMapper :
     {
         return new TemplatesFilterDto
         {
+            All = r.All,
             Ids = r.Ids,
             Names = r.Names,
             Page = r.Page,

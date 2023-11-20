@@ -7,6 +7,6 @@ public interface ITemplatesService
 {
     Task<ErrorOr<TemplateDto>> CreateTemplate(TemplateDto dto, CancellationToken ct);
     Task DeleteTemplates(string[] ids, string[] names, CancellationToken ct);
-    IAsyncEnumerable<ErrorOr<TemplateDto>> GetTemplates(TemplatesFilterDto dto, CancellationToken ct);
+    ValueTask<List<ErrorOr<TemplateDto>>> GetTemplates(TemplatesFilterDto dto, CancellationToken ct);
     Task<ErrorOr<TemplateDto>> UpdateTemplate(TemplateDto dto, CancellationToken ct);
 } 

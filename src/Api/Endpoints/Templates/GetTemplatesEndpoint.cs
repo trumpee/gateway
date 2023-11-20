@@ -1,10 +1,7 @@
-﻿using Api.Extensions;
-using Api.Mappers.Templates;
+﻿using Api.Mappers.Templates;
 using Api.Models.Requests;
 using Api.Models.Responses;
 using Core.Abstractions;
-using Core.Models.Templates;
-using ErrorOr;
 using FastEndpoints;
 
 namespace Api.Endpoints.Templates;
@@ -35,51 +32,12 @@ internal sealed class GetTemplatesEndpoint :
             return;
         }
 
-        var templatesStream = _templatesService.GetTemplates(Map.ToEntity(req), ct);
-        await SendEventStreamAsync("templates", MapChunk(templatesStream), ct);
-    }
+        var templates = (await _templatesService.GetTemplates(Map.ToEntity(req), ct))
+            .Where(t => !t.IsError)
+            .Select(e => TemplateMapper.ToResponse(e.Value))
+            .ToArray();
 
-    private IAsyncEnumerable<ApiResponse<TemplateResponse>> MapChunk(
-        IAsyncEnumerable<ErrorOr<TemplateDto>> templates)
-    {
-        return templates.Select(r => r.ToApiResponse(ToTemplateResponse));
-    }
-
-    private TemplateResponse ToTemplateResponse(TemplateDto dto)
-    {
-        TemplateContentResponse? content = null;
-        if (dto.Content is not null)
-        {
-            var variables = new Dictionary<string, VariableDescriptorResponse>();
-            if (dto.Content.Variables is not null)
-            {
-                variables = dto.Content.Variables
-                    .Select(v => new VariableDescriptorResponse
-                    {
-                        Name = v.Value.Name,
-                        Example = v.Value.Example,
-                        Description = v.Value.Description,
-                    }).ToDictionary(descriptor => descriptor.Name!);
-            }
-
-            content = new TemplateContentResponse()
-            {
-                Subject = dto.Content.Subject,
-                Body = dto.Content.Body,
-                Variables = variables
-            };
-        }
-
-        return new TemplateResponse
-        {
-            Id = dto.Id!,
-            Name = dto.Name!,
-            Description = dto.Description!,
-
-            Content = content,
-
-            CreationTimestamp = dto.CreationTimestamp.GetValueOrDefault(),
-            LastModifiedTimestamp = dto.LastModifiedTimestamp.GetValueOrDefault()
-        };
+        var apiResponse = ApiResponse<TemplateResponse[]>.Success(templates);
+        await SendAsync(apiResponse, cancellation: ct);
     }
 }
