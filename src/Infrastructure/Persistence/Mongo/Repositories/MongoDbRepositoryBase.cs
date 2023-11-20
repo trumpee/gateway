@@ -42,7 +42,6 @@ internal abstract class MongoDbRepositoryBase<T> : IMongoRepository<T>
     public Task InsertOne(T document)
         => Collection.InsertOneAsync(document);
 
-
     public Task InsertMany(IEnumerable<T> documents)
         => Collection.InsertManyAsync(documents);
 
