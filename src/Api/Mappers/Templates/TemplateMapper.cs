@@ -6,7 +6,7 @@ namespace Api.Mappers.Templates;
 
 internal static class TemplateMapper
 {
-    public static TemplateDtoV2 ToDto(TemplateRequest r)
+    public static TemplateDto ToDto(TemplateRequest r)
     {
         TemplateContentDto? content = null;
         if (r.Content is not null)
@@ -31,7 +31,7 @@ internal static class TemplateMapper
             };
         }
 
-        return new TemplateDtoV2
+        return new TemplateDto
         {
             Id = r.Id,
             Name = r.Name,
@@ -45,7 +45,7 @@ internal static class TemplateMapper
         };
     }
 
-    public static TemplateResponse ToResponse(TemplateDtoV2 dto)
+    public static TemplateResponse ToResponse(TemplateDto dto)
     {
         TemplateContentResponse? content = null;
         if (dto.Content is not null)

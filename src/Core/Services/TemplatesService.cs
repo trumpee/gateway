@@ -11,17 +11,17 @@ namespace Core.Services;
 
 internal class TemplatesService : ITemplatesService
 {
-    private readonly ITemplatesV2Repository _templatesV2Repository;
+    private readonly ITemplatesRepository _templatesRepository;
 
     public TemplatesService(
-        ITemplatesV2Repository templatesV2Repository)
+        ITemplatesRepository templatesRepository)
     {
-        _templatesV2Repository = templatesV2Repository;
+        _templatesRepository = templatesRepository;
     }
 
-    public async Task<ErrorOr<TemplateDtoV2>> CreateTemplate(TemplateDtoV2 dto, CancellationToken ct)
+    public async Task<ErrorOr<TemplateDto>> CreateTemplate(TemplateDto dto, CancellationToken ct)
     {
-        var isExists = await _templatesV2Repository
+        var isExists = await _templatesRepository
             .FirstOrDefault(TemplateSpecs.ByName(dto.Name!)) is not null;
         if (isExists)
         {
@@ -31,7 +31,7 @@ internal class TemplatesService : ITemplatesService
         ct.ThrowIfCancellationRequested();
 
         var template = TemplateMapper.ToEntity(dto);
-        await _templatesV2Repository.InsertOne(template);
+        await _templatesRepository.InsertOne(template);
 
         dto = dto with { Id = template.Id.ToString() };
         return dto;
@@ -44,31 +44,31 @@ internal class TemplatesService : ITemplatesService
         var deletionSpec = TemplateSpecs.ByIds(ids) &
                            TemplateSpecs.ByNames(names);
 
-        return _templatesV2Repository.DeleteBySpec(deletionSpec);
+        return _templatesRepository.DeleteBySpec(deletionSpec);
     }
 
-    public async IAsyncEnumerable<ErrorOr<TemplateDtoV2>> GetTemplates(
+    public async IAsyncEnumerable<ErrorOr<TemplateDto>> GetTemplates(
         TemplatesFilterDto dto, [EnumeratorCancellation] CancellationToken ct)
     {
         var spec = TemplatesFilterMapper.MapToSpec(dto);
 
-        var templates = await _templatesV2Repository.FilterBy(spec, dto.Page, dto.PageSize);
+        var templates = await _templatesRepository.FilterBy(spec, dto.Page, dto.PageSize);
         await foreach (var template in templates.WithCancellation(ct))
         {
             yield return TemplateMapper.ToDto(template);
         }
     }
 
-    public async Task<ErrorOr<TemplateDtoV2>> UpdateTemplate(TemplateDtoV2 dto, CancellationToken ct)
+    public async Task<ErrorOr<TemplateDto>> UpdateTemplate(TemplateDto dto, CancellationToken ct)
     {
         if (dto.Id is null)
         {
             ArgumentException.ThrowIfNullOrEmpty(dto.Id);
         }
 
-        await _templatesV2Repository.Replace(TemplateMapper.ToEntity(dto));
+        await _templatesRepository.Replace(TemplateMapper.ToEntity(dto));
 
-        var updatedDocument = await _templatesV2Repository
+        var updatedDocument = await _templatesRepository
             .FirstOrDefault(TemplateSpecs.ById(dto.Id));
         if (updatedDocument is null)
         {

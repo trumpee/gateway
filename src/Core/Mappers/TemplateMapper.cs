@@ -6,7 +6,7 @@ namespace Core.Mappers;
 
 internal static class TemplateMapper
 {
-    internal static TemplateDtoV2 ToDto(TemplateV2 e)
+    internal static TemplateDto ToDto(Template e)
     {
         TemplateContentDto? content = null;
         if (e.Content is not null)
@@ -31,7 +31,7 @@ internal static class TemplateMapper
             };
         }
 
-        return new TemplateDtoV2
+        return new TemplateDto
         {
             Id = e.Id.ToString(),
             Name = e.Name!,
@@ -46,7 +46,7 @@ internal static class TemplateMapper
 
     }
 
-    public static TemplateV2 ToEntity(TemplateDtoV2 dto)
+    public static Template ToEntity(TemplateDto dto)
     {
         var id = string.IsNullOrEmpty(dto.Id)
             ? ObjectId.GenerateNewId()
@@ -75,7 +75,7 @@ internal static class TemplateMapper
             };
         }
 
-        return new TemplateV2
+        return new Template
         {
             Id = id,
             Name = dto.Name!,

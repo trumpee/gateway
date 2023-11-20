@@ -40,12 +40,12 @@ internal sealed class GetTemplatesEndpoint :
     }
 
     private IAsyncEnumerable<ApiResponse<TemplateResponse>> MapChunk(
-        IAsyncEnumerable<ErrorOr<TemplateDtoV2>> templates)
+        IAsyncEnumerable<ErrorOr<TemplateDto>> templates)
     {
         return templates.Select(r => r.ToApiResponse(ToTemplateResponse));
     }
 
-    private TemplateResponse ToTemplateResponse(TemplateDtoV2 dto)
+    private TemplateResponse ToTemplateResponse(TemplateDto dto)
     {
         TemplateContentResponse? content = null;
         if (dto.Content is not null)

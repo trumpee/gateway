@@ -7,7 +7,7 @@ namespace Core.Mappers;
 
 internal static class TemplatesFilterMapper
 {
-    internal static Specification<TemplateV2> MapToSpec(TemplatesFilterDto dto)
+    internal static Specification<Template> MapToSpec(TemplatesFilterDto dto)
     {
         var byNamesSpec = GetFilteringByNamesSpec(dto);
         var byIdsSpec = GetFilteringSpecByIds(dto);
@@ -25,12 +25,12 @@ internal static class TemplatesFilterMapper
         return byIdsSpec;
     }
 
-    private static Specification<TemplateV2>? GetFilteringByNamesSpec(TemplatesFilterDto dto)
+    private static Specification<Template>? GetFilteringByNamesSpec(TemplatesFilterDto dto)
         => dto.Names?.Any() is true
             ? TemplateSpecs.ByNames(dto.Names)
             : null;
 
-    private static Specification<TemplateV2>? GetFilteringSpecByIds(TemplatesFilterDto dto)
+    private static Specification<Template>? GetFilteringSpecByIds(TemplatesFilterDto dto)
         => dto.Ids?.Any() is true
             ? TemplateSpecs.ByIds(dto.Ids)
             : null;

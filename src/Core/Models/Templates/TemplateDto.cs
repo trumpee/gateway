@@ -3,14 +3,6 @@
 public record TemplateDto
 {
     public string? Id { get; init; }
-    public required string Name { get; init; }
-    public required string TextTemplate { get; init; }
-    public Dictionary<string, string>? DataChunksDescription { get; init; }
-}
-
-public record TemplateDtoV2
-{
-    public string? Id { get; init; }
     public string? Name { get; init; }
     public string? Description { get; init; }
 

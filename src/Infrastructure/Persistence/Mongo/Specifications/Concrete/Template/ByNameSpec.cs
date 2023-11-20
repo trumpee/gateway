@@ -3,7 +3,7 @@ using Infrastructure.Persistence.Mongo.Entities;
 
 namespace Infrastructure.Persistence.Mongo.Specifications.Concrete.Template;
 
-public class ByNameSpec : Specification<TemplateV2>
+public class ByNameSpec : Specification<Entities.Template>
 {
     private readonly string _name;
 
@@ -12,6 +12,6 @@ public class ByNameSpec : Specification<TemplateV2>
         _name = name;
     }
 
-    public override Expression<Func<TemplateV2, bool>> ToExpression()
+    public override Expression<Func<Entities.Template, bool>> ToExpression()
         => t => t.Name.Equals(_name);
 }
