@@ -8,31 +8,15 @@ using FastEndpoints;
 namespace Api.Mappers.Templates;
 
 internal class CreateTemplatesMapper :
-    Mapper<CreateTemplateRequest, ApiResponse<TemplateResponse>, ErrorOr<TemplateDto>>
+    Mapper<CreateTemplateRequest, ApiResponse<TemplateResponse>, ErrorOr<TemplateDtoV2>>
 {
-    public override ErrorOr<TemplateDto> ToEntity(CreateTemplateRequest r)
+    public override ErrorOr<TemplateDtoV2> ToEntity(CreateTemplateRequest r)
     {
-        return new TemplateDto
-        {
-            Name = r.Name,
-            TextTemplate = r.TextTemplate,
-            DataChunksDescription = r.DataChunksDescription
-        };
+        return TemplateMapper.ToDto(r);
     }
 
-    public override ApiResponse<TemplateResponse> FromEntity(ErrorOr<TemplateDto> e)
+    public override ApiResponse<TemplateResponse> FromEntity(ErrorOr<TemplateDtoV2> e)
     {
-        return e.ToApiResponse(ToTemplateResponse);
-
-        TemplateResponse ToTemplateResponse(TemplateDto dto)
-        {
-            return new TemplateResponse
-            {
-                Id = dto.Id!,
-                Name = dto.Name,
-                TextTemplate = dto.TextTemplate,
-                DataChunksDescription = dto.DataChunksDescription
-            };
-        }
+        return e.ToApiResponse(TemplateMapper.ToResponse);
     }
 }

@@ -1,20 +1,20 @@
-﻿using Core.Models.Templates;
-using Infrastructure.Persistence.Mongo.Entities;
-using MongoDB.Bson;
+﻿using Api.Models.Requests;
+using Api.Models.Responses;
+using Core.Models.Templates;
 
-namespace Core.Mappers;
+namespace Api.Mappers.Templates;
 
 internal static class TemplateMapper
 {
-    internal static TemplateDtoV2 ToDto(TemplateV2 e)
+    public static TemplateDtoV2 ToDto(TemplateRequest r)
     {
         TemplateContentDto? content = null;
-        if (e.Content is not null)
+        if (r.Content is not null)
         {
             var variables = new Dictionary<string, VariableDescriptorDto>();
-            if (e.Content.Variables is { Count: > 0 })
+            if (r.Content.Variables is { Count: > 0 })
             {
-                variables = e.Content.Variables.Values
+                variables = r.Content.Variables.Values
                     .Select(x => new VariableDescriptorDto
                     {
                         Name = x.Name,
@@ -25,41 +25,36 @@ internal static class TemplateMapper
 
             content = new TemplateContentDto
             {
-                Subject = e.Content.Subject,
-                Body = e.Content.Body,
+                Subject = r.Content.Subject,
+                Body = r.Content.Body,
                 Variables = variables
             };
         }
 
         return new TemplateDtoV2
         {
-            Id = e.Id.ToString(),
-            Name = e.Name!,
-            Description = e.Description!,
+            Id = r.Id,
+            Name = r.Name,
+            Description = r.Description,
 
             Content = content,
 
-            ExcludedChannels = e.ExcludedChannels,
+            ExcludedChannels = r.ExcludedChannels,
             CreationTimestamp = DateTimeOffset.UtcNow,
             LastModifiedTimestamp = DateTimeOffset.UtcNow
         };
-
     }
 
-    public static TemplateV2 ToEntity(TemplateDtoV2 dto)
+    public static TemplateResponse ToResponse(TemplateDtoV2 dto)
     {
-        var id = string.IsNullOrEmpty(dto.Id)
-            ? ObjectId.GenerateNewId()
-            : ObjectId.Parse(dto.Id);
-
-        TemplateContent? content = null;
+        TemplateContentResponse? content = null;
         if (dto.Content is not null)
         {
-            var variables = new Dictionary<string, VariableDescriptor>();
+            var variables = new Dictionary<string, VariableDescriptorResponse>();
             if (dto.Content.Variables is { Count: > 0 })
             {
                 variables = dto.Content.Variables.Values
-                    .Select(x => new VariableDescriptor
+                    .Select(x => new VariableDescriptorResponse
                     {
                         Name = x.Name,
                         Description = x.Description,
@@ -67,7 +62,7 @@ internal static class TemplateMapper
                     }).ToDictionary(x => x.Name!, x => x);
             }
 
-            content = new TemplateContent
+            content = new TemplateContentResponse
             {
                 Subject = dto.Content.Subject,
                 Body = dto.Content.Body,
@@ -75,9 +70,9 @@ internal static class TemplateMapper
             };
         }
 
-        return new TemplateV2
+        return new TemplateResponse
         {
-            Id = id,
+            Id = dto.Id!,
             Name = dto.Name!,
             Description = dto.Description!,
 

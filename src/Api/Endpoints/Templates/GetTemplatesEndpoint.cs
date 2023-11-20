@@ -40,17 +40,46 @@ internal sealed class GetTemplatesEndpoint :
     }
 
     private IAsyncEnumerable<ApiResponse<TemplateResponse>> MapChunk(
-        IAsyncEnumerable<ErrorOr<TemplateDto>> templates)
+        IAsyncEnumerable<ErrorOr<TemplateDtoV2>> templates)
     {
         return templates.Select(r => r.ToApiResponse(ToTemplateResponse));
     }
 
-    private TemplateResponse ToTemplateResponse(TemplateDto dto)
-        => new()
+    private TemplateResponse ToTemplateResponse(TemplateDtoV2 dto)
+    {
+        TemplateContentResponse? content = null;
+        if (dto.Content is not null)
+        {
+            var variables = new Dictionary<string, VariableDescriptorResponse>();
+            if (dto.Content.Variables is not null)
+            {
+                variables = dto.Content.Variables
+                    .Select(v => new VariableDescriptorResponse
+                    {
+                        Name = v.Value.Name,
+                        Example = v.Value.Example,
+                        Description = v.Value.Description,
+                    }).ToDictionary(descriptor => descriptor.Name!);
+            }
+
+            content = new TemplateContentResponse()
+            {
+                Subject = dto.Content.Subject,
+                Body = dto.Content.Body,
+                Variables = variables
+            };
+        }
+
+        return new TemplateResponse
         {
             Id = dto.Id!,
-            Name = dto.Name,
-            TextTemplate = dto.TextTemplate,
-            DataChunksDescription = dto.DataChunksDescription
+            Name = dto.Name!,
+            Description = dto.Description!,
+
+            Content = content,
+
+            CreationTimestamp = dto.CreationTimestamp.GetValueOrDefault(),
+            LastModifiedTimestamp = dto.LastModifiedTimestamp.GetValueOrDefault()
         };
+    }
 }

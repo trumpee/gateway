@@ -9,15 +9,7 @@ internal sealed class CreateTemplateSummary : Summary<CreateTemplateEndpoint, Cr
 {
     private const string TemplateName = "Test notification template";
 
-    private const string TemplateText = "This is a test template. " +
-                                        "Here you can add everything what you need to deliver to user. " +
-                                        "Also, variables substitution supported. Use ${{variable_name}} to replace it " +
-                                        "with a value from delivery context";
-
-    private static readonly Dictionary<string, string> TemplateSubstitutions = new()
-    {
-        { "variable_name", "Here you can specify substitution variable description" }
-    };
+    private const string TemplateText = "Describe template here. Desciption can contains up to 500 symbols";
 
     private static ApiResponse<TemplateResponse> Successful =>
         ApiResponse<TemplateResponse>.Success(
@@ -25,8 +17,10 @@ internal sealed class CreateTemplateSummary : Summary<CreateTemplateEndpoint, Cr
             {
                 Id = Guid.NewGuid().ToString("N"),
                 Name = TemplateName,
-                TextTemplate = TemplateText,
-                DataChunksDescription = TemplateSubstitutions
+                Description = TemplateText,
+                Content = null,
+                CreationTimestamp = DateTimeOffset.UtcNow,
+                LastModifiedTimestamp = DateTimeOffset.UtcNow
             });
 
     private static ApiResponse<TemplateResponse> Failed =>
@@ -41,8 +35,25 @@ internal sealed class CreateTemplateSummary : Summary<CreateTemplateEndpoint, Cr
         ExampleRequest = new CreateTemplateRequest
         {
             Name = TemplateName,
-            TextTemplate = TemplateText,
-            DataChunksDescription = TemplateSubstitutions
+            Description = TemplateText,
+            ExcludedChannels = new[] { "sms", "pagerduty" },
+            Content = new TemplateContentRequest
+            {
+                Subject = "Activate Your Account",
+                Body =
+                    "<h1>Welcome to Our Service, ${{userName}}!</h1><p>Your account has been successfully created. Please click the link below to activate your account:</p><p><a href='${{activationLink}}'>Activate Account</a></p><p>If you did not request this account, no further action is required.</p>",
+                Variables = new Dictionary<string, VariableDescriptorRequest>
+                {
+                    {
+                        "userName", new VariableDescriptorRequest
+                        {
+                            Name = "userName",
+                            Description = "The name of the user",
+                            Example = "John Doe"
+                        }
+                    }
+                }
+            }
         };
 
         Response(
