@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using Core.Abstractions;
+﻿using Core.Abstractions;
 using Core.Errors;
 using Core.Mappers;
 using Core.Models.Templates;
@@ -13,7 +12,8 @@ internal class TemplatesService : ITemplatesService
 {
     private readonly ITemplatesRepository _templatesRepository;
 
-    public TemplatesService(ITemplatesRepository templatesRepository)
+    public TemplatesService(
+        ITemplatesRepository templatesRepository)
     {
         _templatesRepository = templatesRepository;
     }
@@ -21,7 +21,7 @@ internal class TemplatesService : ITemplatesService
     public async Task<ErrorOr<TemplateDto>> CreateTemplate(TemplateDto dto, CancellationToken ct)
     {
         var isExists = await _templatesRepository
-            .FirstOrDefault(TemplateSpecs.ByName(dto.Name)) is not null;
+            .FirstOrDefault(TemplateSpecs.ByName(dto.Name!)) is not null;
         if (isExists)
         {
             return TemplatesErrors.NameDuplication;
@@ -46,16 +46,16 @@ internal class TemplatesService : ITemplatesService
         return _templatesRepository.DeleteBySpec(deletionSpec);
     }
 
-    public async IAsyncEnumerable<ErrorOr<TemplateDto>> GetTemplates(
-        TemplatesFilterDto dto, [EnumeratorCancellation] CancellationToken ct)
+    public async ValueTask<List<ErrorOr<TemplateDto>>> GetTemplates(
+        TemplatesFilterDto dto, CancellationToken ct)
     {
         var spec = TemplatesFilterMapper.MapToSpec(dto);
 
-        var templates = await _templatesRepository.FilterBy(spec, dto.Page, dto.PageSize);
-        await foreach (var template in templates.WithCancellation(ct))
-        {
-            yield return TemplateMapper.ToDto(template);
-        }
+        var templates = await (await _templatesRepository.FilterBy(spec, dto.Page, dto.PageSize))
+            .Select(x => ErrorOr.ErrorOr.From(TemplateMapper.ToDto(x)))
+            .ToListAsync(ct);
+
+        return templates;
     }
 
     public async Task<ErrorOr<TemplateDto>> UpdateTemplate(TemplateDto dto, CancellationToken ct)

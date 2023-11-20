@@ -1,9 +1,3 @@
-﻿namespace Api.Endpoints.Templates;
+﻿namespace Api.Models.Requests;
 
-internal record UpdateTemplateRequest
-{
-    public string Id { get; init; } = null!;
-    public string? Name { get; init; }
-    public string? TextTemplate { get; init; }
-    public Dictionary<string, string>? DataChunksDescription { get; init; }
-}
+internal record UpdateTemplateRequest : TemplateRequest;

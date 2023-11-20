@@ -1,7 +1,6 @@
 ﻿using Core.Models.Templates;
 using Infrastructure.Persistence.Mongo.Entities;
 using Infrastructure.Persistence.Mongo.Specifications;
-using Infrastructure.Persistence.Mongo.Specifications.Concrete;
 using Infrastructure.Persistence.Mongo.Specifications.Concrete.Template;
 
 namespace Core.Mappers;
@@ -10,6 +9,11 @@ internal static class TemplatesFilterMapper
 {
     internal static Specification<Template> MapToSpec(TemplatesFilterDto dto)
     {
+        if (dto.All is true)
+        {
+            return TemplateSpecs.All;
+        }
+
         var byNamesSpec = GetFilteringByNamesSpec(dto);
         var byIdsSpec = GetFilteringSpecByIds(dto);
 
@@ -22,10 +26,8 @@ internal static class TemplatesFilterMapper
         {
             return byNamesSpec;
         }
-        else
-        {
-            return byIdsSpec;
-        }
+
+        return byIdsSpec!;
     }
 
     private static Specification<Template>? GetFilteringByNamesSpec(TemplatesFilterDto dto)

@@ -1,10 +1,7 @@
-﻿using Api.Extensions;
-using Api.Mappers.Templates;
+﻿using Api.Mappers.Templates;
 using Api.Models.Requests;
 using Api.Models.Responses;
 using Core.Abstractions;
-using Core.Models.Templates;
-using ErrorOr;
 using FastEndpoints;
 
 namespace Api.Endpoints.Templates;
@@ -35,22 +32,12 @@ internal sealed class GetTemplatesEndpoint :
             return;
         }
 
-        var templatesStream = _templatesService.GetTemplates(Map.ToEntity(req), ct);
-        await SendEventStreamAsync("templates", MapChunk(templatesStream), ct);
-    }
+        var templates = (await _templatesService.GetTemplates(Map.ToEntity(req), ct))
+            .Where(t => !t.IsError)
+            .Select(e => TemplateMapper.ToResponse(e.Value))
+            .ToArray();
 
-    private IAsyncEnumerable<ApiResponse<TemplateResponse>> MapChunk(
-        IAsyncEnumerable<ErrorOr<TemplateDto>> templates)
-    {
-        return templates.Select(r => r.ToApiResponse(ToTemplateResponse));
+        var apiResponse = ApiResponse<TemplateResponse[]>.Success(templates);
+        await SendAsync(apiResponse, cancellation: ct);
     }
-
-    private TemplateResponse ToTemplateResponse(TemplateDto dto)
-        => new()
-        {
-            Id = dto.Id!,
-            Name = dto.Name,
-            TextTemplate = dto.TextTemplate,
-            DataChunksDescription = dto.DataChunksDescription
-        };
 }

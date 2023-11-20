@@ -1,5 +1,5 @@
-﻿using Api.Endpoints.Templates;
-using Api.Extensions;
+﻿using Api.Extensions;
+using Api.Models.Requests;
 using Api.Models.Responses;
 using Core.Models.Templates;
 using ErrorOr;
@@ -12,28 +12,11 @@ internal class UpdateTemplateMapper :
 {
     public override ErrorOr<TemplateDto> ToEntity(UpdateTemplateRequest r)
     {
-        return new TemplateDto
-        {
-            Id = r.Id,
-            Name = r.Name!,
-            TextTemplate = r.TextTemplate!,
-            DataChunksDescription = r.DataChunksDescription
-        };
+        return TemplateMapper.ToDto(r);
     }
 
     public override ApiResponse<TemplateResponse> FromEntity(ErrorOr<TemplateDto> e)
     {
-        return e.ToApiResponse(ToTemplateResponse);
-
-        TemplateResponse ToTemplateResponse(TemplateDto dto)
-        {
-            return new TemplateResponse
-            {
-                Id = dto.Id!,
-                Name = dto.Name,
-                TextTemplate = dto.TextTemplate,
-                DataChunksDescription = dto.DataChunksDescription
-            };
-        }
+        return e.ToApiResponse(TemplateMapper.ToResponse);
     }
 }

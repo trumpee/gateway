@@ -21,7 +21,7 @@ internal sealed class DeleteTemplatesEndpoint : Endpoint<DeleteTemplatesRequest>
     }
 
     public override async Task HandleAsync(DeleteTemplatesRequest req, CancellationToken ct)
-    {
+    {   
         if (ValidationFailed)
         {
             var details = new ProblemDetails(ValidationFailures);

@@ -1,4 +1,5 @@
 ﻿using Api.Endpoints.Templates;
+using Api.Models.Requests;
 using Api.Models.Responses;
 using FastEndpoints;
 
@@ -11,19 +12,13 @@ internal sealed class UpdateTemplateSummary : Summary<UpdateTemplateEndpoint, Up
     private const string TemplateText =
         "This is an updated message template with a substitution of the timestamp. ${{timestamp}} ";
 
-    private static readonly Dictionary<string, string> TemplateSubstitutions = new()
-    {
-        { "timestamp", "Message delivery request creation timestamp" }
-    };
-
     private static ApiResponse<TemplateResponse> Successful =>
         ApiResponse<TemplateResponse>.Success(
             new TemplateResponse
             {
                 Id = Guid.NewGuid().ToString("N"),
                 Name = TemplateName,
-                TextTemplate = TemplateText,
-                DataChunksDescription = TemplateSubstitutions
+                Description = TemplateText,
             });
 
     private static ApiResponse<TemplateResponse> Failed =>
@@ -38,8 +33,7 @@ internal sealed class UpdateTemplateSummary : Summary<UpdateTemplateEndpoint, Up
         ExampleRequest = new UpdateTemplateRequest
         {
             Name = TemplateName,
-            TextTemplate = TemplateText,
-            DataChunksDescription = TemplateSubstitutions
+            Description = "",
         };
 
         Response(

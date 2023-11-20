@@ -2,6 +2,7 @@
 
 public static class TemplateSpecs
 {
+    public static Specification<Entities.Template> All => Specification<Entities.Template>.True;
     public static ByNameSpec ByName(string name) => new(name);
 
     public static Specification<Entities.Template> ByNames(string[] names)

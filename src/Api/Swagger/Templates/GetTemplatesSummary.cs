@@ -15,8 +15,7 @@ internal sealed class GetTemplatesSummary : Summary<GetTemplatesEndpoint>
                 {
                     Id = Guid.NewGuid().ToString("N"),
                     Name = "template_1",
-                    TextTemplate = "template_1 body",
-                    DataChunksDescription = null
+                    Description = "template_1 body",
                 }
             });
 
