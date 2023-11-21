@@ -3,10 +3,8 @@ using MongoDB.Bson;
 
 namespace Infrastructure.Persistence.Mongo.Entities.Notifications;
 
-public record Notification
+public record Notification : MongoBaseEntity
 {
-    public ObjectId Id { get; init; }
-
     public string? TemplateId { get; init; }
     public Priority Priority { get; init; }
 
