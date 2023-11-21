@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Persistence.Mongo.Entities.Template;
+﻿namespace Infrastructure.Persistence.Mongo.Entities.Common;
 
 public class VariableDescriptor
 {

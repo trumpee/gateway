@@ -1,14 +1,16 @@
-﻿namespace Infrastructure.Persistence.Mongo.Entities.Template;
+﻿using Infrastructure.Persistence.Mongo.Entities.Common;
+
+namespace Infrastructure.Persistence.Mongo.Entities.Template;
 
 public record Template : MongoBaseEntity
 {
-    public required string? Name { get; set; }
-    public required string? Description { get; set; }
+    public required string? Name { get; init; }
+    public required string? Description { get; init; }
 
-    public TemplateContent? Content { get; set; }
+    public Content? Content { get; init; }
 
-    public string[]? ExcludedChannels { get; set; }
+    public string[]? ExcludedChannels { get; init; }
 
-    public DateTimeOffset? CreationTimestamp { get; set; }
-    public DateTimeOffset? LastModifiedTimestamp { get; set; }
+    public DateTimeOffset? CreationTimestamp { get; init; }
+    public DateTimeOffset? LastModifiedTimestamp { get; init; }
 }

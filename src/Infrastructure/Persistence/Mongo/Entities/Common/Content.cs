@@ -1,6 +1,6 @@
-﻿namespace Infrastructure.Persistence.Mongo.Entities.Template;
+﻿namespace Infrastructure.Persistence.Mongo.Entities.Common;
 
-public class TemplateContent
+public class Content
 {
     public string? Subject { get; set; }
     public string? Body { get; set; }
