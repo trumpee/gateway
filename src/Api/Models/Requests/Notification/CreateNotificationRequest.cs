@@ -9,7 +9,7 @@ internal record CreateNotificationRequest
     public PriorityRequest PriorityRequest { get; set; }
 
     [JsonProperty("content")]
-    public ContentRequest Content { get; set; }
+    public ContentRequest? Content { get; set; }
 
     public DateTimeOffset DeliveryTimestamp { get; set; }
     public int RetryCount { get; set; }
