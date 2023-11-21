@@ -4,7 +4,7 @@ using FluentValidation;
 namespace Api.Endpoints.Templates.Validators;
 
 internal class TemplateContentValidator :
-    AbstractValidator<TemplateContentRequest>
+    AbstractValidator<ContentRequest>
 {
     public TemplateContentValidator()
     {

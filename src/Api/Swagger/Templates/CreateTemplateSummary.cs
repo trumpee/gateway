@@ -38,7 +38,7 @@ internal sealed class CreateTemplateSummary : Summary<CreateTemplateEndpoint, Cr
             Name = TemplateName,
             Description = TemplateText,
             ExcludedChannels = new[] { "sms", "pagerduty" },
-            Content = new TemplateContentRequest
+            Content = new ContentRequest
             {
                 Subject = "Activate Your Account",
                 Body =

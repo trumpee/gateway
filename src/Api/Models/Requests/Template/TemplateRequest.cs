@@ -10,7 +10,7 @@ internal record TemplateRequest
     public required string Description { get; init; }
 
     [JsonProperty("content")]
-    public TemplateContentRequest? Content { get; init; }
+    public ContentRequest? Content { get; init; }
 
     public string[]? ExcludedChannels { get; init; }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Api.Models.Requests.Common;
 
-internal record TemplateContentRequest
+internal record ContentRequest
 {
     public required string? Subject { get; init; }
     public required string? Body { get; init; }
