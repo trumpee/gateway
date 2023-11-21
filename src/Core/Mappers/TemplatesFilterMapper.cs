@@ -1,5 +1,6 @@
 ﻿using Core.Models.Templates;
 using Infrastructure.Persistence.Mongo.Entities;
+using Infrastructure.Persistence.Mongo.Entities.Template;
 using Infrastructure.Persistence.Mongo.Specifications;
 using Infrastructure.Persistence.Mongo.Specifications.Concrete.Template;
 

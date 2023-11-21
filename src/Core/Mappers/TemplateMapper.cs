@@ -1,6 +1,7 @@
 ﻿using Core.Models.Common;
 using Core.Models.Templates;
 using Infrastructure.Persistence.Mongo.Entities;
+using Infrastructure.Persistence.Mongo.Entities.Template;
 using MongoDB.Bson;
 
 namespace Core.Mappers;
