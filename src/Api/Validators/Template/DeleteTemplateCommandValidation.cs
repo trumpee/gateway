@@ -2,7 +2,7 @@
 using FastEndpoints;
 using FluentValidation;
 
-namespace Api.Endpoints.Templates.Validators;
+namespace Api.Validators.Template;
 
 internal class DeleteTemplateCommandValidation : Validator<DeleteTemplatesRequest>
 {
