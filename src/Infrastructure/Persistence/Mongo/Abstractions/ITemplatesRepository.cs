@@ -1,5 +1,4 @@
-﻿using Infrastructure.Persistence.Mongo.Entities;
-using Infrastructure.Persistence.Mongo.Entities.Template;
+﻿using Infrastructure.Persistence.Mongo.Entities.Template;
 
 namespace Infrastructure.Persistence.Mongo.Abstractions;
 
