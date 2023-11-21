@@ -1,4 +1,5 @@
-﻿using Core.Models.Templates;
+﻿using Core.Models.Common;
+using Core.Models.Templates;
 using Infrastructure.Persistence.Mongo.Entities;
 using MongoDB.Bson;
 
@@ -8,7 +9,7 @@ internal static class TemplateMapper
 {
     internal static TemplateDto ToDto(Template e)
     {
-        TemplateContentDto? content = null;
+        ContentDto? content = null;
         if (e.Content is not null)
         {
             var variables = new Dictionary<string, VariableDescriptorDto>();
@@ -23,7 +24,7 @@ internal static class TemplateMapper
                     }).ToDictionary(x => x.Name!, x => x);
             }
 
-            content = new TemplateContentDto
+            content = new ContentDto
             {
                 Subject = e.Content.Subject,
                 Body = e.Content.Body,

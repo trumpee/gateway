@@ -1,5 +1,6 @@
 ﻿using Api.Models.Requests.Template;
 using Api.Models.Responses;
+using Core.Models.Common;
 using Core.Models.Templates;
 
 namespace Api.Mappers.Templates;
@@ -8,7 +9,7 @@ internal static class TemplateMapper
 {
     public static TemplateDto ToDto(TemplateRequest r)
     {
-        TemplateContentDto? content = null;
+        ContentDto? content = null;
         if (r.Content is not null)
         {
             var variables = new Dictionary<string, VariableDescriptorDto>();
@@ -23,7 +24,7 @@ internal static class TemplateMapper
                     }).ToDictionary(x => x.Name!, x => x);
             }
 
-            content = new TemplateContentDto
+            content = new ContentDto
             {
                 Subject = r.Content.Subject,
                 Body = r.Content.Body,

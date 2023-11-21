@@ -1,4 +1,4 @@
-﻿namespace Core.Models.Templates;
+﻿namespace Core.Models.Common;
 
 public class VariableDescriptorDto
 {

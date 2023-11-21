@@ -1,6 +1,6 @@
-﻿namespace Core.Models.Templates;
+﻿namespace Core.Models.Common;
 
-public class TemplateContentDto
+public class ContentDto
 {
     public string? Subject { get; init; }
     public string? Body { get; init; }
