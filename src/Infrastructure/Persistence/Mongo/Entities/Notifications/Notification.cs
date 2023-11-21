@@ -1,10 +1,11 @@
 ﻿using Infrastructure.Persistence.Mongo.Entities.Common;
+using MongoDB.Bson;
 
 namespace Infrastructure.Persistence.Mongo.Entities.Notifications;
 
 public record Notification
 {
-    public string? Id { get; init; }
+    public ObjectId Id { get; init; }
 
     public string? TemplateId { get; init; }
     public Priority Priority { get; init; }
