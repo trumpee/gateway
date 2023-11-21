@@ -1,4 +1,5 @@
-﻿using Api.Models.Requests.Template;
+﻿using Api.Mappers.Common;
+using Api.Models.Requests.Template;
 using Api.Models.Responses;
 using Core.Models.Common;
 using Core.Models.Templates;
@@ -12,24 +13,7 @@ internal static class TemplateMapper
         ContentDto? content = null;
         if (r.Content is not null)
         {
-            var variables = new Dictionary<string, VariableDescriptorDto>();
-            if (r.Content.Variables is { Count: > 0 })
-            {
-                variables = r.Content.Variables.Values
-                    .Select(x => new VariableDescriptorDto
-                    {
-                        Name = x.Name,
-                        Description = x.Description,
-                        Example = x.Example
-                    }).ToDictionary(x => x.Name!, x => x);
-            }
-
-            content = new ContentDto
-            {
-                Subject = r.Content.Subject,
-                Body = r.Content.Body,
-                Variables = variables
-            };
+            content = ContentMapper.ToDto(r.Content);
         }
 
         return new TemplateDto
@@ -51,24 +35,7 @@ internal static class TemplateMapper
         ContentResponse? content = null;
         if (dto.Content is not null)
         {
-            var variables = new Dictionary<string, VariableDescriptorResponse>();
-            if (dto.Content.Variables is { Count: > 0 })
-            {
-                variables = dto.Content.Variables.Values
-                    .Select(x => new VariableDescriptorResponse
-                    {
-                        Name = x.Name,
-                        Description = x.Description,
-                        Example = x.Example
-                    }).ToDictionary(x => x.Name!, x => x);
-            }
-
-            content = new ContentResponse
-            {
-                Subject = dto.Content.Subject,
-                Body = dto.Content.Body,
-                Variables = variables
-            };
+            content = ContentMapper.ToResponse(dto.Content);
         }
 
         return new TemplateResponse
