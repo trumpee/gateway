@@ -1,5 +1,4 @@
-﻿using Api.Models.Requests;
-using Api.Models.Requests.Template;
+﻿using Api.Models.Requests.Template;
 using Api.Models.Responses;
 using Core.Abstractions;
 using FastEndpoints;

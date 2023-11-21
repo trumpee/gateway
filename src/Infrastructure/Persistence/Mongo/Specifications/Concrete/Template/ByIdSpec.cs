@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using Infrastructure.Persistence.Mongo.Entities;
 using MongoDB.Bson;
 
 namespace Infrastructure.Persistence.Mongo.Specifications.Concrete.Template;
