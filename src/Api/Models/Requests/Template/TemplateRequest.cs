@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Api.Models.Requests.Common;
+using Newtonsoft.Json;
 
 namespace Api.Models.Requests.Template;
 

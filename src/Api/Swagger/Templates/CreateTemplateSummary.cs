@@ -1,4 +1,5 @@
 ﻿using Api.Endpoints.Templates;
+using Api.Models.Requests.Common;
 using Api.Models.Requests.Template;
 using Api.Models.Responses;
 using FastEndpoints;

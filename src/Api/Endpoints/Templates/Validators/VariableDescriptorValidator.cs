@@ -1,4 +1,4 @@
-﻿using Api.Models.Requests.Template;
+﻿using Api.Models.Requests.Common;
 using FluentValidation;
 
 namespace Api.Endpoints.Templates.Validators;

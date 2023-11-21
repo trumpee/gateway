@@ -1,4 +1,4 @@
-﻿namespace Api.Models.Requests.Template;
+﻿namespace Api.Models.Requests.Common;
 
 internal class VariableDescriptorRequest
 {
