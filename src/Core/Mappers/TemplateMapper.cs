@@ -13,24 +13,7 @@ internal static class TemplateMapper
         ContentDto? content = null;
         if (e.Content is not null)
         {
-            var variables = new Dictionary<string, VariableDescriptorDto>();
-            if (e.Content.Variables is { Count: > 0 })
-            {
-                variables = e.Content.Variables.Values
-                    .Select(x => new VariableDescriptorDto
-                    {
-                        Name = x.Name,
-                        Description = x.Description,
-                        Example = x.Example
-                    }).ToDictionary(x => x.Name!, x => x);
-            }
-
-            content = new ContentDto
-            {
-                Subject = e.Content.Subject,
-                Body = e.Content.Body,
-                Variables = variables
-            };
+            content = ContentMapper.ToDto(e.Content);
         }
 
         return new TemplateDto
@@ -57,24 +40,7 @@ internal static class TemplateMapper
         Content? content = null;
         if (dto.Content is not null)
         {
-            var variables = new Dictionary<string, VariableDescriptor>();
-            if (dto.Content.Variables is { Count: > 0 })
-            {
-                variables = dto.Content.Variables.Values
-                    .Select(x => new VariableDescriptor
-                    {
-                        Name = x.Name,
-                        Description = x.Description,
-                        Example = x.Example
-                    }).ToDictionary(x => x.Name!, x => x);
-            }
-
-            content = new Content
-            {
-                Subject = dto.Content.Subject,
-                Body = dto.Content.Body,
-                Variables = variables
-            };
+            content = ContentMapper.ToEntity(dto.Content);
         }
 
         return new Template
