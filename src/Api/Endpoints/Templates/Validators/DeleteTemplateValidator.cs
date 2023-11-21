@@ -1,4 +1,5 @@
 ﻿using Api.Models.Requests;
+using Api.Models.Requests.Template;
 using FastEndpoints;
 using FluentValidation;
 

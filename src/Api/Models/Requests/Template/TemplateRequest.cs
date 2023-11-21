@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Api.Models.Requests;
+namespace Api.Models.Requests.Template;
 
 internal record TemplateRequest
 {

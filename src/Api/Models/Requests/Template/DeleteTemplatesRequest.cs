@@ -1,4 +1,4 @@
-﻿namespace Api.Models.Requests;
+﻿namespace Api.Models.Requests.Template;
 
 public record DeleteTemplatesRequest
 {
