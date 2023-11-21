@@ -6,7 +6,7 @@ internal record TemplateResponse
     public required string Name { get; set; }
     public required string Description { get; set; }
 
-    public TemplateContentResponse? Content { get; set; }
+    public ContentResponse? Content { get; set; }
 
     public string[]? ExcludedChannels { get; set; }
     public DateTimeOffset CreationTimestamp { get; set; }

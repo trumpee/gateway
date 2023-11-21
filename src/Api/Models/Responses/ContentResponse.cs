@@ -1,6 +1,6 @@
 ﻿namespace Api.Models.Responses;
 
-internal record TemplateContentResponse
+internal record ContentResponse
 {
     public string? Subject { get; init; }
     public string? Body { get; init; }

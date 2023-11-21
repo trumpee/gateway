@@ -48,7 +48,7 @@ internal static class TemplateMapper
 
     public static TemplateResponse ToResponse(TemplateDto dto)
     {
-        TemplateContentResponse? content = null;
+        ContentResponse? content = null;
         if (dto.Content is not null)
         {
             var variables = new Dictionary<string, VariableDescriptorResponse>();
@@ -63,7 +63,7 @@ internal static class TemplateMapper
                     }).ToDictionary(x => x.Name!, x => x);
             }
 
-            content = new TemplateContentResponse
+            content = new ContentResponse
             {
                 Subject = dto.Content.Subject,
                 Body = dto.Content.Body,
