@@ -3,7 +3,7 @@ using Core.Models.Common;
 
 namespace Core.Models.Notifications;
 
-internal record NotificationDto
+public record NotificationDto
 {
     public string? Id { get; set; }
 

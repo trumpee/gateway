@@ -1,6 +1,6 @@
 ﻿namespace Core.Models.Notifications;
 
-internal enum Priority
+public enum Priority
 {
     Low,
     Medium,
