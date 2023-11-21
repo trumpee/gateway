@@ -12,18 +12,3 @@ internal record TemplateResponse
     public DateTimeOffset CreationTimestamp { get; set; }
     public DateTimeOffset LastModifiedTimestamp { get; set; }
 }
-
-internal record TemplateContentResponse
-{
-    public string? Subject { get; init; }
-    public string? Body { get; init; }
-
-    public Dictionary<string, VariableDescriptorResponse>? Variables { get; set; }
-}
-
-public class VariableDescriptorResponse
-{
-    public string? Name { get; init; }
-    public string? Example { get; init; }
-    public string? Description { get; init; }
-}

@@ -13,18 +13,3 @@ public record TemplateDto
     public DateTimeOffset? CreationTimestamp { get; init; }
     public DateTimeOffset? LastModifiedTimestamp { get; init; }
 }
-
-public class TemplateContentDto
-{
-    public string? Subject { get; init; }
-    public string? Body { get; init; }
-
-    public Dictionary<string, VariableDescriptorDto>? Variables { get; set; }
-}
-
-public class VariableDescriptorDto
-{
-    public string? Name { get; init; }
-    public string? Example { get; init; }
-    public string? Description { get; init; }
-}
