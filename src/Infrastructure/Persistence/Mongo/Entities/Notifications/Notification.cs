@@ -2,16 +2,16 @@
 
 namespace Infrastructure.Persistence.Mongo.Entities.Notifications;
 
-internal record Notification
+public record Notification
 {
-    public string? Id { get; set; }
+    public string? Id { get; init; }
 
-    public string? TemplateId { get; set; }
-    public Priority Priority { get; set; }
+    public string? TemplateId { get; init; }
+    public Priority Priority { get; init; }
 
-    public Content? Content { get; set; }
+    public Content? Content { get; init; }
 
-    public DateTimeOffset DeliveryTimestamp { get; set; }
-    public int RetryCount { get; set; }
-    public string? Status { get; set; }
+    public DateTimeOffset DeliveryTimestamp { get; init; }
+    public int RetryCount { get; init; }
+    public string? Status { get; init; }
 }

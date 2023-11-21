@@ -1,6 +1,6 @@
 ﻿namespace Infrastructure.Persistence.Mongo.Entities.Notifications;
 
-internal enum Priority
+public enum Priority
 {
     Low,
     Medium,

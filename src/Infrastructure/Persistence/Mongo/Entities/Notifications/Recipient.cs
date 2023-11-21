@@ -1,7 +1,7 @@
 ﻿namespace Infrastructure.Persistence.Mongo.Entities.Notifications;
 
-internal class Recipient
+public record Recipient
 {
-    public string? UserId { get; set; }
-    public string? Channel { get; set; }
+    public string? UserId { get; init; }
+    public string? Channel { get; init; }
 }
