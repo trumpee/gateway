@@ -12,7 +12,7 @@ public record NotificationDto
 
     public ContentDto? Content { get; set; }
 
-    public DateTimeOffset DeliveryTimestamp { get; set; }
+    public DateTimeOffset? DeliveryTimestamp { get; set; }
     public int RetryCount { get; set; }
     public string? Status { get; set; }
 }

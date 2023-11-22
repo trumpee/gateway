@@ -21,9 +21,8 @@ internal static class NotificationMapper
             TemplateId = e.TemplateId,
             Priority = (Priority)e.Priority,
             Content = contentDto,
-            Status = e.Status,
             RetryCount = e.RetryCount,
-            DeliveryTimestamp = e.DeliveryTimestamp
+            DeliveryTimestamp = e.DeliveryTimestamp,
         };
     }
 

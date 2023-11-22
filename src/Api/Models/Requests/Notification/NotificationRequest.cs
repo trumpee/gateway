@@ -11,7 +11,6 @@ internal record NotificationRequest
     [JsonProperty("content")]
     public ContentRequest? Content { get; set; }
 
-    public DateTimeOffset DeliveryTimestamp { get; set; }
+    public DateTimeOffset? DeliveryTimestamp { get; set; }
     public int RetryCount { get; set; }
-    public string? Status { get; set; }
 }

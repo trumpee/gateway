@@ -10,7 +10,7 @@ public record Notification : MongoBaseEntity
 
     public Content? Content { get; init; }
 
-    public DateTimeOffset DeliveryTimestamp { get; init; }
+    public DateTimeOffset? DeliveryTimestamp { get; init; }
     public int RetryCount { get; init; }
     public string? Status { get; init; }
 }
