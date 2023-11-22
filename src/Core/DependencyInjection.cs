@@ -10,5 +10,6 @@ public static class DependencyInjection
     public static void AddGatewayCore(this IServiceCollection services, IConfiguration config)
     {
         services.AddScoped<ITemplatesService, TemplatesService>();
+        services.AddScoped<INotificationsService, NotificationService>();
     }
 }
