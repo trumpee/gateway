@@ -1,5 +1,4 @@
 ﻿using Infrastructure.Persistence.Mongo.Entities.Common;
-using MongoDB.Bson;
 
 namespace Infrastructure.Persistence.Mongo.Entities.Notifications;
 
