@@ -1,5 +1,6 @@
 ﻿using Api.Endpoints.Templates;
-using Api.Models.Requests;
+using Api.Models.Requests.Common;
+using Api.Models.Requests.Template;
 using Api.Models.Responses;
 using FastEndpoints;
 
@@ -37,7 +38,7 @@ internal sealed class CreateTemplateSummary : Summary<CreateTemplateEndpoint, Cr
             Name = TemplateName,
             Description = TemplateText,
             ExcludedChannels = new[] { "sms", "pagerduty" },
-            Content = new TemplateContentRequest
+            Content = new ContentRequest
             {
                 Subject = "Activate Your Account",
                 Body =

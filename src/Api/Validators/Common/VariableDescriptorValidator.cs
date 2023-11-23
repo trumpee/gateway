@@ -1,7 +1,7 @@
-﻿using Api.Models.Requests;
+﻿using Api.Models.Requests.Common;
 using FluentValidation;
 
-namespace Api.Endpoints.Templates.Validators;
+namespace Api.Validators.Common;
 
 internal class VariableDescriptorValidator :
     AbstractValidator<KeyValuePair<string, VariableDescriptorRequest>>

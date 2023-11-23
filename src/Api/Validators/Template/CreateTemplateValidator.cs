@@ -1,8 +1,9 @@
-﻿using Api.Models.Requests;
+﻿using Api.Models.Requests.Template;
+using Api.Validators.Common;
 using FastEndpoints;
 using FluentValidation;
 
-namespace Api.Endpoints.Templates.Validators;
+namespace Api.Validators.Template;
 
 internal class CreateTemplateValidator :
     Validator<CreateTemplateRequest>
@@ -24,7 +25,7 @@ internal class CreateTemplateValidator :
         {
             RuleFor(x => x.Content)
                 .NotEmpty()
-                .SetValidator(new TemplateContentValidator()!, "Template Content Validator");
+                .SetValidator(new ContentValidator()!, "Template Content Validator");
         });
     }
 }

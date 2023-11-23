@@ -1,12 +1,12 @@
-﻿using Api.Models.Requests;
+﻿using Api.Models.Requests.Common;
 using FluentValidation;
 
-namespace Api.Endpoints.Templates.Validators;
+namespace Api.Validators.Common;
 
-internal class TemplateContentValidator :
-    AbstractValidator<TemplateContentRequest>
+internal class ContentValidator :
+    AbstractValidator<ContentRequest>
 {
-    public TemplateContentValidator()
+    public ContentValidator()
     {
         RuleFor(x => x.Subject)
             .MaximumLength(255);

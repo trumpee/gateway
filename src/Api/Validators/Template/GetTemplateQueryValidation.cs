@@ -1,8 +1,8 @@
-﻿using Api.Models.Requests;
+﻿using Api.Models.Requests.Template;
 using FastEndpoints;
 using FluentValidation;
 
-namespace Api.Endpoints.Templates.Validators;
+namespace Api.Validators.Template;
 
 internal class GetTemplateQueryValidation : Validator<GetTemplatesRequest>
 {

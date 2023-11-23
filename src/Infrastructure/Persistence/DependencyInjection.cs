@@ -11,6 +11,7 @@ public static class DependencyInjection
     public static void AddPersistence(this IServiceCollection services, IConfiguration config)
     {
         services.AddScoped<ITemplatesRepository, TemplatesRepository>();        
+        services.AddScoped<INotificationsRepository, NotificationsRepository>();        
 
         services.AddMongoDb(config);
     }
