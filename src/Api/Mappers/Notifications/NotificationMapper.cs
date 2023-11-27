@@ -21,8 +21,11 @@ internal static class NotificationMapper
             TemplateId = e.TemplateId,
             Priority = (Priority)e.Priority,
             Content = contentDto,
+            Recipients = e.Recipients
+                .Select(RecipientMapper.ToDto)
+                .ToArray(),
             RetryCount = e.RetryCount,
-            DeliveryTimestamp = e.DeliveryTimestamp,
+            DeliveryTimestamp = e.DeliveryTimestamp
         };
     }
 

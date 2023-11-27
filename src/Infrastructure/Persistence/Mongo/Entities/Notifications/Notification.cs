@@ -8,6 +8,7 @@ public record Notification : MongoBaseEntity
     public Priority Priority { get; init; }
 
     public Content? Content { get; init; }
+    public Recipient[]? Recipients { get; set; }
 
     public DateTimeOffset? DeliveryTimestamp { get; init; }
     public int RetryCount { get; init; }

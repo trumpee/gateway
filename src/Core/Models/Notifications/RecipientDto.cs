@@ -1,7 +1,7 @@
 ﻿namespace Core.Models.Notifications;
 
-internal class RecipientDto
+public class RecipientDto
 {
-    public string? UserId { get; set; }
-    public string? Channel { get; set; }
+    public string? UserId { get; init; }
+    public string? Channel { get; init; }
 }
