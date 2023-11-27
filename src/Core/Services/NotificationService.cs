@@ -26,4 +26,12 @@ internal class NotificationService : INotificationsService
         dto = dto with { Id = notification.Id.ToString() };
         return dto;
     }
+
+    private Task<ErrorOr<object>> CreateDeliveryRequests(
+        NotificationDto dto, CancellationToken ct)
+    {
+        // TODO: add validations here
+        _ = Mappers.External.DeliveryRequestMapper.ToRequest(dto);
+        return Task.FromResult<ErrorOr<object>>(Task.FromResult<ErrorOr<object>>(default));
+    }
 }
