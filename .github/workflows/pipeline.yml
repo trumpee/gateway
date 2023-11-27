@@ -20,7 +20,7 @@ jobs:
           dotnet-version: ${{ secrets.DOTNET_VERSION }}
 
       - name: Build Solution
-        run:  dotnet build -c Release --source "https://nuget.pkg.github.com/Bardin08/index.json" --source "https://api.nuget.org/v3/index.json" Gateway.sln
+        run:  dotnet build -c Release --source "https://nuget.pkg.github.com/trumpee/index.json" --source "https://api.nuget.org/v3/index.json" Gateway.sln
 
       - name: Test
         run: dotnet test --no-build -c Release -v normal Gateway.sln
