@@ -7,7 +7,7 @@ namespace Core.Mappers.External;
 
 internal static class DeliveryRequestMapper
 {
-    internal static Notification ToRequest(NotificationDto dto)
+    internal static Notification ToRequest(NotificationDto dto, RecipientDto recipient)
     {
         ArgumentNullException.ThrowIfNull(dto.Content);
 
@@ -18,9 +18,8 @@ internal static class DeliveryRequestMapper
             Status = dto.Status,
             Timestamp = dto.DeliveryTimestamp,
 
-            // TODO: add mapping
-            // UserId = 
-            // Channel = dto.
+            UserId = recipient.UserId,
+            Channel = recipient.Channel
         };
     }
 }

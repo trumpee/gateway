@@ -3,6 +3,7 @@ using Core.Mappers;
 using Core.Models.Notifications;
 using ErrorOr;
 using Infrastructure.Persistence.Mongo.Abstractions;
+using Trumpee.MassTransit.Messages.Notifications;
 
 namespace Core.Services;
 
@@ -23,15 +24,20 @@ internal class NotificationService : INotificationsService
         ct.ThrowIfCancellationRequested();
         await _notificationsRepository.InsertOne(notification);
 
+        var deliveryRequests = CreateDeliveryRequests(dto);
+        // TODO: push delivery requests to queue
+
         dto = dto with { Id = notification.Id.ToString() };
         return dto;
     }
 
-    private Task<ErrorOr<object>> CreateDeliveryRequests(
-        NotificationDto dto, CancellationToken ct)
+    private Task<ErrorOr<List<Notification>>> CreateDeliveryRequests(
+        NotificationDto dto)
     {
-        // TODO: add validations here
-        _ = Mappers.External.DeliveryRequestMapper.ToRequest(dto);
-        return Task.FromResult<ErrorOr<object>>(Task.FromResult<ErrorOr<object>>(default));
+        var requests = dto.Recipients!
+            .Select(recipient => Mappers.External.DeliveryRequestMapper.ToRequest(dto, recipient))
+            .ToList();
+
+        return Task.FromResult<ErrorOr<List<Notification>>>(requests);
     }
 }
