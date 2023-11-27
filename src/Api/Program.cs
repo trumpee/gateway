@@ -21,7 +21,6 @@ builder.Services.AddFastEndpoints(cfg =>
 {
     opt.DocumentSettings = s =>
     {
-        s.GenerateExamples = true;
         s.Version = "v1";
         s.Title = "gateway";
     };

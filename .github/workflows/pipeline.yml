@@ -12,15 +12,15 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{ secrets.DOTNET_VERSION }}
 
       - name: Build Solution
-        run:  dotnet build ./Gateway.sln --configuration ${{ secrets.BUILD_CONFIGURATION }}
+        run:  dotnet build -c Release --source "https://nuget.pkg.github.com/Bardin08/index.json" --source "https://api.nuget.org/v3/index.json" Gateway.sln
 
       - name: Test
-        run: dotnet test --no-build --configuration ${{ secrets.BUILD_CONFIGURATION }} --verbosity normal ./Gateway.sln
+        run: dotnet test --no-build -c Release -v normal Gateway.sln
