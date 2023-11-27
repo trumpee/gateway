@@ -2,23 +2,12 @@
 
 namespace Infrastructure.Persistence.MassTransit;
 
-public class MassTransitClient<TMessage> : IMassTransitClient<TMessage> where TMessage : class
+public abstract class MassTransitClient<TMessage>(ISendEndpointProvider endpointProvider) :
+    IMassTransitClient<TMessage> where TMessage : class
 {
-    private readonly ISendEndpointProvider _endpointProvider;
-
-    public MassTransitClient(ISendEndpointProvider endpointProvider)
+    public async Task SendMessages(List<TMessage> messages, string queueName)
     {
-        _endpointProvider = endpointProvider;
-    }
-
-    public async Task SendMessages(List<TMessage> messages)
-    {
-        var endpoint = await _endpointProvider.GetSendEndpoint(new Uri("queue:validation"));
+        var endpoint = await endpointProvider.GetSendEndpoint(new Uri(queueName));
         await endpoint.SendBatch(messages);
     }
-}
-
-public interface IMassTransitClient<TMessage>
-{
-    Task SendMessages(List<TMessage> messages);
 }
