@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices.Marshalling;
-using Infrastructure.Persistence.MassTransit;
+﻿using Infrastructure.Persistence.MassTransit;
 using Infrastructure.Persistence.Mongo.Abstractions;
 using Infrastructure.Persistence.Mongo.Configurations;
 using Infrastructure.Persistence.Mongo.Entities.Notifications;
