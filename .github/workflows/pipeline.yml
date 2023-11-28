@@ -20,7 +20,7 @@ jobs:
           dotnet-version: ${{ secrets.DOTNET_VERSION }}
 
       - name: Add NuGet source
-        run: dotnet nuget add source https://nuget.pkg.github.com/trumpee/index.json --username trumpee --password ${{ secrets.SECRET_TOKEN }}
+        run: dotnet nuget add source https://nuget.pkg.github.com/trumpee/index.json --username trumpee --password ${{ secrets.SECRET_TOKEN }} --store-password-in-clear-text
 
       - name: Build Solution
         run:  dotnet build -c Release --source "https://nuget.pkg.github.com/trumpee/index.json" --source "https://api.nuget.org/v3/index.json" Gateway.sln

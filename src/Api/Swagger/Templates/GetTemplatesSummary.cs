@@ -15,7 +15,7 @@ internal sealed class GetTemplatesSummary : Summary<GetTemplatesEndpoint>
                 {
                     Id = Guid.NewGuid().ToString("N"),
                     Name = "template_1",
-                    Description = "template_1 body",
+                    Description = "template_1 body"
                 }
             });
 
@@ -31,7 +31,7 @@ internal sealed class GetTemplatesSummary : Summary<GetTemplatesEndpoint>
         {
             All = true,
             Ids = Array.Empty<string>(),
-            Names = Array.Empty<string>(),
+            Names = Array.Empty<string>()
         };
 
         Response(StatusCodes.Status200OK,
