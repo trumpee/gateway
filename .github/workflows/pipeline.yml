@@ -19,6 +19,9 @@ jobs:
         with:
           dotnet-version: ${{ secrets.DOTNET_VERSION }}
 
+      - name: Add NuGet source
+        run: dotnet nuget add source https://nuget.pkg.github.com/trumpee/index.json --name TrumpeePrivateFeed --username trumpee --password ${{ secrets.SECRET_TOKEN }}
+
       - name: Build Solution
         run:  dotnet build -c Release --source "https://nuget.pkg.github.com/trumpee/index.json" --source "https://api.nuget.org/v3/index.json" Gateway.sln
 
