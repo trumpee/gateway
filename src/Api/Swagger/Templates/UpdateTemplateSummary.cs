@@ -18,7 +18,7 @@ internal sealed class UpdateTemplateSummary : Summary<UpdateTemplateEndpoint, Up
             {
                 Id = Guid.NewGuid().ToString("N"),
                 Name = TemplateName,
-                Description = TemplateText,
+                Description = TemplateText
             });
 
     private static ApiResponse<TemplateResponse> Failed =>
@@ -33,7 +33,7 @@ internal sealed class UpdateTemplateSummary : Summary<UpdateTemplateEndpoint, Up
         ExampleRequest = new UpdateTemplateRequest
         {
             Name = TemplateName,
-            Description = "",
+            Description = ""
         };
 
         Response(
