@@ -1,7 +1,6 @@
 ﻿using Infrastructure.Persistence.MassTransit;
 using Infrastructure.Persistence.Mongo.Abstractions;
 using Infrastructure.Persistence.Mongo.Configurations;
-using Infrastructure.Persistence.Mongo.Entities.Notifications;
 using Infrastructure.Persistence.Mongo.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +28,6 @@ public static class DependencyInjection
     {
         services.AddConfiguredMassTransit(config);
 
-        services.AddScoped<IMassTransitClient<Notification>, MassTransitClient<Notification>>();
+        services.AddScoped<IDeliveryRequestValidationClient, DeliveryRequestValidationClient>();
     }
 }
