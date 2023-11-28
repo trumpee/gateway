@@ -23,7 +23,7 @@ internal class VariableDescriptorValidator :
 
     private void NamesEquals(
         KeyValuePair<string, VariableDescriptorRequest> value,
-        FluentValidation.ValidationContext<KeyValuePair<string, VariableDescriptorRequest>> validationContext)
+        ValidationContext<KeyValuePair<string, VariableDescriptorRequest>> validationContext)
     {
         if (value.Key.Equals(value.Value.Name))
         {

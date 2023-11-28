@@ -18,12 +18,17 @@ internal static class NotificationMapper
             contentDto = ContentMapper.ToDto(c);
         }
 
+        var recipients = e.Recipients!
+            .Select(RecipientMapper.ToDto)
+            .ToArray();
+
         return new NotificationDto
         {
             Id = e.Id.ToString(),
             TemplateId = e.TemplateId,
             Priority = (PriorityDto)e.Priority,
             Content = contentDto,
+            Recipients = recipients,
             Status = e.Status,
             RetryCount = e.RetryCount,
             DeliveryTimestamp = e.DeliveryTimestamp
@@ -42,12 +47,17 @@ internal static class NotificationMapper
             contentDto = ContentMapper.ToEntity(c);
         }
 
+        var recipients = e.Recipients!
+            .Select(RecipientMapper.ToEntity)
+            .ToArray();
+
         return new Notification
         {
             Id = id,
             TemplateId = e.TemplateId,
             Priority = (PriorityEntity)e.Priority,
             Content = contentDto,
+            Recipients = recipients,
             Status = e.Status,
             RetryCount = e.RetryCount,
             DeliveryTimestamp = e.DeliveryTimestamp

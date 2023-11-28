@@ -10,7 +10,7 @@ internal record NotificationRequest
 
     [JsonProperty("content")]
     public ContentRequest? Content { get; set; }
-
+    public required RecipientRequest[] Recipients { get; set; }
     public DateTimeOffset? DeliveryTimestamp { get; set; }
     public int RetryCount { get; set; }
 }
