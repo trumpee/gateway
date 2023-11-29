@@ -53,11 +53,9 @@ internal static class VariableMapper
         {
             Name = dto.Name!,
             Description = dto.Description,
-            Example = dto.Example
-
-            // TODO: add missed mapping
-            // Value = "",
-            // ValueType = ""
+            Example = dto.Example,
+            Value = dto.Value,
+            ValueType = dto.ValueType
         };
     }
 }

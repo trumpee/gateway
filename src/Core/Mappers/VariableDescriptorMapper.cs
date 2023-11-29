@@ -11,7 +11,9 @@ internal static class VariableDescriptorMapper
         {
             Name = e.Name,
             Description = e.Description,
-            Example = e.Example
+            Example = e.Example,
+            Value = e.Value,
+            ValueType = e.ValueType
         };
     }
 
@@ -21,7 +23,9 @@ internal static class VariableDescriptorMapper
         {
             Name = dto.Name,
             Description = dto.Description,
-            Example = dto.Example
+            Example = dto.Example,
+            // Value = dto.Value,
+            // ValueType = dto.ValueType
         };
     }
 }

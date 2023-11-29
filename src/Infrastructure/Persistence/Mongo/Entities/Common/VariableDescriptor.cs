@@ -2,7 +2,9 @@
 
 public class VariableDescriptor
 {
-    public string? Name { get; set; }
-    public string? Example { get; set; }
-    public string? Description { get; set; }
+    public string? Name { get; init; }
+    public string? Example { get; init; }
+    public string? Description { get; init; }
+    public object? Value { get; init; }
+    public string? ValueType { get; init; }
 }
