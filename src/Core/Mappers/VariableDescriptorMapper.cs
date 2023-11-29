@@ -24,8 +24,8 @@ internal static class VariableDescriptorMapper
             Name = dto.Name,
             Description = dto.Description,
             Example = dto.Example,
-            // Value = dto.Value,
-            // ValueType = dto.ValueType
+            Value = dto.Value,
+            ValueType = dto.ValueType
         };
     }
 }
