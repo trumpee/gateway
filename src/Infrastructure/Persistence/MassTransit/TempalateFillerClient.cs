@@ -5,10 +5,10 @@ using Trumpee.MassTransit.Messages.Notifications;
 
 namespace Infrastructure.Persistence.MassTransit;
 
-public class DeliveryRequestValidationClient :
-    MassTransitClient<Notification>, IDeliveryRequestValidationClient
+public class TemplateFillerClient :
+    MassTransitClient<Notification>, ITemplateFillerClient
 {
-    public DeliveryRequestValidationClient(ISendEndpointProvider endpointProvider) :
+    public TemplateFillerClient(ISendEndpointProvider endpointProvider) :
         base(endpointProvider)
     {
     }
@@ -17,6 +17,6 @@ public class DeliveryRequestValidationClient :
         IEnumerable<Notification> messages,
         string _)
     {
-        return base.SendMessages(messages, QueueNames.ValidationQueueName);
+        return base.SendMessages(messages, QueueNames.TemplateFillerQueueName);
     }
 }

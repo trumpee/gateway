@@ -1,4 +1,5 @@
-﻿using Api.Models.Requests.Common;
+﻿using System.Text.Json;
+using Api.Models.Requests.Common;
 using Api.Models.Responses;
 using Core.Models.Common;
 
@@ -12,7 +13,9 @@ internal static class VariableDescriptorMapper
         {
             Name = e.Name,
             Description = e.Description,
-            Example = e.Example
+            Example = e.Example,
+            Value = JsonSerializer.Serialize(e.Value),
+            ValueType = e.ValueType
         };
     }
 
