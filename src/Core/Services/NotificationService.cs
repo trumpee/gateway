@@ -9,7 +9,7 @@ using Trumpee.MassTransit.Messages.Notifications;
 namespace Core.Services;
 
 internal class NotificationService(
-        IDeliveryRequestValidationClient massTransitClient,
+        ITemplateFillerClient massTransitClient,
         INotificationsRepository notificationsRepository)
     : INotificationsService
 {

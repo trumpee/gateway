@@ -28,6 +28,6 @@ public static class DependencyInjection
     {
         services.AddConfiguredMassTransit(config);
 
-        services.AddScoped<IDeliveryRequestValidationClient, DeliveryRequestValidationClient>();
+        services.AddScoped<ITemplateFillerClient, TemplateFillerClient>();
     }
 }
