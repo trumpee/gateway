@@ -1,4 +1,5 @@
 ﻿ARG NUGET_API_KEY
+ENV NUGET_API_KEY=$NUGET_API_KEY
 
 # STAGE 1: Build Environment
 FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build-env

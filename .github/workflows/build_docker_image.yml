@@ -31,7 +31,9 @@ jobs:
                   password: ${{ secrets.GITHUB_TOKEN }}
 
             - name: Build and Push Docker Image
+              env:
+                  NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}  # Reference the secret
               run: |
-                  docker build -t ghcr.io/bardin08/trumpee-gateway:${{ github.event.release.tag_name}} --build-arg NUGET_API_KEY=${{ secrets.SECRET_TOKEN }} .
+                  docker build -t ghcr.io/bardin08/trumpee-gateway:${{ github.event.release.tag_name}} --build-arg NUGET_API_KEY=$NUGET_API_KEY .
                   docker tag ghcr.io/bardin08/trumpee-gateway:${{ github.event.release.tag_name}} ghcr.io/bardin08/trumpee-gateway:latest
                   docker push ghcr.io/bardin08/trumpee-gateway --all-tags 
