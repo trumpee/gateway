@@ -32,6 +32,6 @@ jobs:
 
             - name: Build and Push Docker Image
               run: |
-                  docker build -t ghcr.io/bardin08/trumpee-gateway:${{ github.event.release.tag_name}} --build-arg ${{ secrets.NUGET_API_KEY }} .
+                  docker build -t ghcr.io/bardin08/trumpee-gateway:${{ github.event.release.tag_name}} --build-arg NUGET_API_KEY=${{ secrets.SECRET_TOKEN }} .
                   docker tag ghcr.io/bardin08/trumpee-gateway:${{ github.event.release.tag_name}} ghcr.io/bardin08/trumpee-gateway:latest
                   docker push ghcr.io/bardin08/trumpee-gateway --all-tags 
