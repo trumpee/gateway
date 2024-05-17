@@ -3,7 +3,6 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build-env
 WORKDIR /src
 
 ARG NUGET_API_KEY
-ENV NUGET_API_KEY=$NUGET_API_KEY
 
 # Copy the project files first for better layer caching (if only code changes)
 COPY *.sln ./
