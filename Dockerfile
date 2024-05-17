@@ -5,9 +5,7 @@ WORKDIR /src
 ARG NUGET_API_KEY
 
 # Copy the project files first for better layer caching (if only code changes)
-COPY *.sln ./
-COPY Gateway.* ./Gateway/
-COPY Api.* ./Api/
+COPY . ./
 
 # Add the custom NuGet source
 RUN dotnet nuget add source https://nuget.pkg.github.com/trumpee/index.json --name github --username trumpee --password $NUGET_API_KEY --store-password-in-clear-text
