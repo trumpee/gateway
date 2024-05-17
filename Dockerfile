@@ -11,7 +11,7 @@ COPY Gateway.* ./Gateway/
 COPY Api.* ./Api/
 
 # Add the custom NuGet source
-RUN dotnet nuget add source https://nuget.pkg.github.com/trumpee/index.json --name github --username trumpee --password $NUGET_API_KEY --store-password-in-clear-text
+RUN dotnet nuget add source https://nuget.pkg.github.com/trumpee/index.json --name github --username trumpee --password $NUGET_API_KEY
 
 # Restore NuGet packages from both sources
 RUN dotnet restore Gateway.sln --source "https://api.nuget.org/v3/index.json" --source "https://nuget.pkg.github.com/trumpee/index.json"
