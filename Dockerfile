@@ -17,7 +17,7 @@ RUN dotnet restore Gateway.sln --source "https://api.nuget.org/v3/index.json" --
 RUN dotnet build Gateway.sln -c Release
 
 # Publish the Api project only (assuming this is the main entry point)
-RUN dotnet publish ./Api/Api.csproj -c Release -o /app
+RUN dotnet publish ./src/Api/Api.csproj -c Release -o /app
 
 # STAGE 2: Runtime Environment
 FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine 
