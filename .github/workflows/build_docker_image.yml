@@ -1,0 +1,37 @@
+name: Deploy to DROPLET
+
+on:
+    release:
+        types: [ created ]
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        permissions: write-all
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Variable Substitution in appsettings.json
+              uses: microsoft/variable-substitution@v1
+              with:
+                  files: '**/appsettings.json'
+              env:
+                  MassTransit.Transport.Port: 23501
+                  MassTransit.Transport.Username: ${{ secrets.RABBITMQ_USERNAME }}
+                  MassTransit.Transport.Password: ${{ secrets.RABBITMQ_PASSWORD }}
+
+                  MongoDb.DatabaseName: ${{ secrets.MONGODB_DATABASE }}
+                  MongoDb.ConnectionString: ${{ secrets.MONGODB_CONNECTION_STRING }}
+
+            - name: Login to GitHub Container Registry
+              uses: docker/login-action@v2
+              with:
+                  registry: ghcr.io
+                  username: ${{ github.actor }}
+                  password: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Build and Push Docker Image
+              run: |
+                  docker build -t ghcr.io/bardin08/trumpee-gateway:${{ github.event.release.tag_name}} .
+                  docker tag ghcr.io/bardin08/trumpee-gateway:${{ github.event.release.tag_name}} ghcr.io/bardin08/trumpee-gateway:latest
+                  docker push ghcr.io/bardin08/trumpee-gateway --all-tags 
