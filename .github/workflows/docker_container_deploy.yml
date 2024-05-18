@@ -38,12 +38,13 @@ jobs:
                         # Pull with explicit tag (or default to 'latest')
                         docker login ghcr.io -u bardin08 -p ${{ secrets.GITHUB_TOKEN }}
                         echo "Pulling image: ghcr.io/trumpee/trumpee-${{ env.lowercase_repo_name }}:${{ github.event.inputs.image_tag }}"
-                        docker pull "ghcr.io/trumpee/trumpee-${{ env.lowercase_repo_name }}:${{ github.event.inputs.image_tag }}"
+                        docker pull ghcr.io/trumpee/trumpee-${{ env.lowercase_repo_name }}:${{ github.event.inputs.image_tag }}
                         
                         # Run with the specified tag, restart policy, and optional ports
                         safe_container_name=$(echo "trumpee-${{ env.lowercase_repo_name }}-${{ github.event.inputs.image_tag }}" | tr -dc 'a-zA-Z0-9-_')
                         echo "Running container: trumpee-${{ env.lowercase_repo_name }}:${{ github.event.inputs.image_tag }}"
+                        echo "Container name: $safe_container_name"
                         docker run -d \
                         --restart unless-stopped \
-                        --name "$safe_container_name" \
-                        "ghcr.io/trumpee/trumpee-${{ env.lowercase_repo_name }}:${{ github.event.release.tag_name}}"
+                        --name $safe_container_name \
+                        ghcr.io/trumpee/trumpee-${{ env.lowercase_repo_name }}:${{ github.event.release.tag_name}}
