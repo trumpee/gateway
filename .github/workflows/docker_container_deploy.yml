@@ -1,0 +1,37 @@
+name: Deploy to DROPLET
+
+on:
+    workflow_dispatch:
+        inputs:
+            image_tag:
+                description: 'Choose a tag:'
+                required: true
+                type: string
+                default: 'latest'
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        permissions: write-all
+        steps:
+            -   name: Convert Repository Name to Lowercase
+                run: |
+                    lowercase_name=$(echo "${{ github.event.repository.name }}" | tr '[:upper:]' '[:lower:]')
+                    echo "lowercase_repo_name=$lowercase_name" >> $GITHUB_ENV
+
+            -   name: Deploy infra to DROPLET
+                uses: appleboy/ssh-action@master
+                with:
+                    passphrase: ${{ secrets.SSH_PASSPHRASE }}
+                    host: ${{ secrets.DROPLET_HOST }}
+                    username: ${{ secrets.DROPLET_USERNAME }}
+                    key: ${{ secrets.DROPLET_KEY }}
+                    script: |
+                        docker container ls -q --filter name=trumpee-${{ env.lowercase_repo_name }}:${{ github.event.inputs.image_tag }} > /tmp/current_container_id || true  # Get the container ID if it exists
+                        if [ -s /tmp/current_container_id ]; then  # Check if previous container exists and is running
+                        docker stop $(cat /tmp/current_container_id) || true  # Stop the old container
+                        docker rm $(cat /tmp/current_container_id) || true   # Remove the old container
+                        fi
+                        
+                        docker pull ghcr.io/trumpee/trumpee-${{ env.lowercase_repo_name }}:${{ github.event.release.tag_name}}
+                        docker run -d -p 5217:8080 --name trumpee-${{ env.lowercase_repo_name }}:${{ github.event.inputs.image_tag }} ghcr.io/trumpee/trumpee-${{ env.lowercase_repo_name }}:${{ github.event.release.tag_name}} 
