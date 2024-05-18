@@ -36,6 +36,7 @@ jobs:
                         fi
                         
                         # Pull with explicit tag (or default to 'latest')
+                        docker login ghcr.io -u bardin08 -p ${{ secrets.GITHUB_TOKEN }}
                         echo "Pulling image: ghcr.io/trumpee/trumpee-${{ env.lowercase_repo_name }}:${{ github.event.inputs.image_tag }}"
                         docker pull "ghcr.io/trumpee/trumpee-${{ env.lowercase_repo_name }}:${{ github.event.inputs.image_tag }}"
                         
