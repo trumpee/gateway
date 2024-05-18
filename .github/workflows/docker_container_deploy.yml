@@ -36,8 +36,8 @@ jobs:
                         fi
                         
                         # Pull with explicit tag (or default to 'latest')
-                        echo "Pulling image: ghcr.io/trumpee/trumpee-${{ env.lowercase_repo_name }}:${{ github.event.release.tag_name}}"
-                        docker pull "ghcr.io/trumpee/trumpee-${{ env.lowercase_repo_name }}:${{ github.event.release.tag_name}}"
+                        echo "Pulling image: ghcr.io/trumpee/trumpee-${{ env.lowercase_repo_name }}:${{ github.event.inputs.image_tag }}"
+                        docker pull "ghcr.io/trumpee/trumpee-${{ env.lowercase_repo_name }}:${{ github.event.inputs.image_tag }}"
                         
                         # Run with the specified tag, restart policy, and optional ports
                         echo "Running container: trumpee-${{ env.lowercase_repo_name }}:${{ github.event.inputs.image_tag }}"
