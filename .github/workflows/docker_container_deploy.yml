@@ -28,9 +28,9 @@ jobs:
                     key: ${{ secrets.DROPLET_KEY }}
                     script: |
                         # Check if previous container exists and is running (based on name)
-                        existing_container_id=$(docker ps -aqf "name=$container_name")
+                        existing_container_id=$(docker ps -aqf "name=trumpee-${{ env.lowercase_repo_name }}-${{ github.event.inputs.image_tag }}")
                         if [ -n "$existing_container_id" ]; then
-                        echo "Stopping existing container: $container_name"
+                        echo "Stopping existing container: trumpee-${{ env.lowercase_repo_name }}-${{ github.event.inputs.image_tag }}"
                         docker stop $existing_container_id
                         docker rm $existing_container_id
                         fi
