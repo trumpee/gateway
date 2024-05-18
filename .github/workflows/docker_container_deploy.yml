@@ -41,8 +41,9 @@ jobs:
                         docker pull "ghcr.io/trumpee/trumpee-${{ env.lowercase_repo_name }}:${{ github.event.inputs.image_tag }}"
                         
                         # Run with the specified tag, restart policy, and optional ports
+                        safe_container_name=$(echo "trumpee-${{ env.lowercase_repo_name }}-${{ github.event.inputs.image_tag }}" | tr -dc 'a-zA-Z0-9-_')
                         echo "Running container: trumpee-${{ env.lowercase_repo_name }}:${{ github.event.inputs.image_tag }}"
                         docker run -d \
                         --restart unless-stopped \
-                        --name "trumpee-${{ env.lowercase_repo_name }}" \
+                        --name "$safe_container_name" \
                         "ghcr.io/trumpee/trumpee-${{ env.lowercase_repo_name }}:${{ github.event.release.tag_name}}"
