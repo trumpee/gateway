@@ -47,4 +47,4 @@ jobs:
                         docker run -d \
                         --restart unless-stopped \
                         --name $safe_container_name \
-                        ghcr.io/trumpee/trumpee-${{ env.lowercase_repo_name }}:${{ github.event.release.tag_name}}
+                        ghcr.io/trumpee/trumpee-${{ env.lowercase_repo_name }}:${{ github.event.inputs.image_tag}}
