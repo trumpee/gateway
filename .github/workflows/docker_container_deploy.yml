@@ -27,11 +27,21 @@ jobs:
                     username: ${{ secrets.DROPLET_USERNAME }}
                     key: ${{ secrets.DROPLET_KEY }}
                     script: |
-                        docker container ls -q --filter name=trumpee-${{ env.lowercase_repo_name }}:${{ github.event.inputs.image_tag }} > /tmp/current_container_id || true  # Get the container ID if it exists
-                        if [ -s /tmp/current_container_id ]; then  # Check if previous container exists and is running
-                        docker stop $(cat /tmp/current_container_id) || true  # Stop the old container
-                        docker rm $(cat /tmp/current_container_id) || true   # Remove the old container
+                        # Check if previous container exists and is running (based on name)
+                        existing_container_id=$(docker ps -aqf "name=$container_name")
+                        if [ -n "$existing_container_id" ]; then
+                        echo "Stopping existing container: $container_name"
+                        docker stop $existing_container_id
+                        docker rm $existing_container_id
                         fi
                         
-                        docker pull ghcr.io/trumpee/trumpee-${{ env.lowercase_repo_name }}:${{ github.event.release.tag_name}}
-                        docker run -d -p 5217:8080 --name trumpee-${{ env.lowercase_repo_name }}:${{ github.event.inputs.image_tag }} ghcr.io/trumpee/trumpee-${{ env.lowercase_repo_name }}:${{ github.event.release.tag_name}} 
+                        # Pull with explicit tag (or default to 'latest')
+                        echo "Pulling image: ghcr.io/trumpee/trumpee-${{ env.lowercase_repo_name }}:${{ github.event.release.tag_name}}"
+                        docker pull "ghcr.io/trumpee/trumpee-${{ env.lowercase_repo_name }}:${{ github.event.release.tag_name}}"
+                        
+                        # Run with the specified tag, restart policy, and optional ports
+                        echo "Running container: trumpee-${{ env.lowercase_repo_name }}:${{ github.event.inputs.image_tag }}"
+                        docker run -d \
+                        --restart unless-stopped \
+                        --name "trumpee-${{ env.lowercase_repo_name }}:${{ github.event.inputs.image_tag }}" \
+                        "ghcr.io/trumpee/trumpee-${{ env.lowercase_repo_name }}:${{ github.event.release.tag_name}}"
