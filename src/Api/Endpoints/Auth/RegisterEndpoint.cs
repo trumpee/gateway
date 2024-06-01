@@ -9,7 +9,7 @@ namespace Api.Endpoints.Auth;
 public class RegisterEndpoint(
     IAuthService authService,
     ILogger<RegisterEndpoint> logger)
-    : Endpoint<RegisterRequest, ApiResponse<UserTokenResponse>>
+    : Endpoint<RegisterRequest, ApiResponse<UserInfoResponse>>
 {
     private readonly IAuthService _authService = authService;
     private readonly ILogger<RegisterEndpoint> _logger = logger;
@@ -26,17 +26,21 @@ public class RegisterEndpoint(
     {
         try
         {
-            var tokenInfo = await _authService.RegisterUser(
+            var registrationResponse = await _authService.RegisterUser(
                 new RegisterRequestDto(req.Login, req.FullName, req.Password, req.Email), ct);
 
-            if (tokenInfo is null)
+            if (registrationResponse is null)
             {
                 await SendUnauthorizedAsync(ct);
             }
             else
             {
-                var payload = new UserTokenResponse(tokenInfo.Token, tokenInfo.ExpiresIn);
-                await SendAsync(ApiResponse<UserTokenResponse>.Success(payload), cancellation: ct);
+                var tokenInfo = new UserTokenResponse(
+                    registrationResponse.TokenInfo.Token,
+                    registrationResponse.TokenInfo.ExpiresIn);
+
+                var payload = new UserInfoResponse(registrationResponse.UserId, tokenInfo);
+                await SendAsync(ApiResponse<UserInfoResponse>.Success(payload), cancellation: ct);
             }
         }
         catch (Exception ex)

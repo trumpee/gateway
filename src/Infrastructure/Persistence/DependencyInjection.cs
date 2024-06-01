@@ -3,6 +3,7 @@ using Infrastructure.Auth0;
 using Infrastructure.Auth0.Abstractions;
 using Infrastructure.Auth0.Configuration;
 using Infrastructure.Persistence.MassTransit;
+using Infrastructure.Persistence.MassTransit.Analytics;
 using Infrastructure.Persistence.Mongo.Abstractions;
 using Infrastructure.Persistence.Mongo.Configurations;
 using Infrastructure.Persistence.Mongo.Repositories;
@@ -34,6 +35,7 @@ public static class DependencyInjection
         services.AddConfiguredMassTransit(config);
         
         services.AddScoped<ITemplateFillerClient, TemplateFillerClient>();
+        services.AddScoped<IUserAnalyticsClient, UserAnalyticsClient>();
     }
     
     private static void AddAuth0(this IServiceCollection services, IConfiguration config)
