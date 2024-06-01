@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Auth0Net.DependencyInjection" Version="3.2.0" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
       <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.0" />
