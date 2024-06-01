@@ -72,7 +72,7 @@ public class AuthService(
                 ClientId = _auth0Options.ClientId
             }, ct);
             
-            return await GetUserToken(new LoginRequestDto(username, req.Password), ct);
+            return await GetUserToken(new LoginRequestDto(req.Email, req.Password), ct);
         }
         catch (Exception ex)
         {
