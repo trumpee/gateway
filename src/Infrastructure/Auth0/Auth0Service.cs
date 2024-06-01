@@ -4,15 +4,17 @@ using Infrastructure.Auth0.Abstractions;
 using Infrastructure.Auth0.Configuration;
 using Infrastructure.Auth0.Models;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Infrastructure.Auth0;
 
 public class AuthService(
-    Auth0Options auth0Options,
+    IOptions<Auth0Options> auth0Options,
     IAuthenticationApiClient authenticationClient,
     ILogger<AuthService> logger) : IAuthService
 {
-    private readonly Auth0Options _auth0Options = auth0Options;
+    private readonly Auth0Options _auth0Options = auth0Options.Value ??
+                                                  throw new ArgumentNullException(nameof(auth0Options));
     private readonly IAuthenticationApiClient _auth0Client = authenticationClient;
     private readonly ILogger<AuthService> _logger = logger;
     
@@ -24,8 +26,8 @@ public class AuthService(
             {
                 Username = req.Login,
                 Password = req.Password,
+
                 Realm = _auth0Options.Realm,
-                
                 Audience = _auth0Options.Audience,
                 ClientId = _auth0Options.ClientId,
                 ClientSecret = _auth0Options.ClientSecret,
@@ -60,8 +62,13 @@ public class AuthService(
                 Name = req.FullName ,
                 Password = req.Password,
                 Email = req.Email,
-                
-                Connection = "edu-automation",
+
+                UserMetadata = new Dictionary<string, object>
+                {
+                    ["trumpee_uid"] = username
+                },
+
+                Connection =_auth0Options.Realm,
                 ClientId = _auth0Options.ClientId
             }, ct);
             
