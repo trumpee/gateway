@@ -36,6 +36,7 @@ public static class DependencyInjection
         
         services.AddScoped<ITemplateFillerClient, TemplateFillerClient>();
         services.AddScoped<IUserAnalyticsClient, UserAnalyticsClient>();
+        services.AddScoped<INotificationsAnalyticsClient, NotificationsAnalyticsClient>();
     }
     
     private static void AddAuth0(this IServiceCollection services, IConfiguration config)
