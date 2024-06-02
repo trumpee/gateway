@@ -13,7 +13,7 @@ namespace Core.Services;
 
 public class UserPreferencesService(
     IUserAnalyticsClient userAnalyticsClient,
-    IMongoRepository<UserPreferences> userPreferencesRepository,
+    IUserPreferencesRepository userPreferencesRepository,
     ILogger<UserPreferencesService> logger) : IUserPreferencesService
 {
     private readonly IUserAnalyticsClient _userAnalyticsClient = userAnalyticsClient;
@@ -64,7 +64,7 @@ public class UserPreferencesService(
 
             // here user mail should be sent
             await _userAnalyticsClient.SendUserAction(
-                userPreferences.UserId, "UserPreferencesCreated", "recipient", "User's Preferences", ct);
+                userPreferences.UserId, "UserPreferencesUpdated", "recipient", "User's Preferences", ct);
 
             return UserPreferencesMapper.ToDto(entity);
         }

@@ -4,7 +4,7 @@ using MongoDB.Bson;
 
 namespace Core.Mappers;
 
-public class UserPreferencesMapper
+public static class UserPreferencesMapper
 {
     internal static UserPreferencesDto ToDto(UserPreferences e)
     {
@@ -17,44 +17,41 @@ public class UserPreferencesMapper
                 Enabled = d.Value.Enabled,
                 Description = d.Value.Description,
                 Metadata = d.Value.Metadata
-            }) ?? []
+            })
         };
     }
     
     public static UserPreferences UpdateEntity(UserPreferences e, UserPreferencesDto dto)
     {
         var channels = e.Channels;
-        if (channels.Count > 0)
+        foreach (var ch in dto.Channels)
         {
-            foreach (var ch in dto.Channels)
+            if (channels.TryGetValue(ch.Key, out var channel))
             {
-                if (channels.TryGetValue(ch.Key, out var channel))
+                channel.Enabled = ch.Value.Enabled;
+                channel.Description = ch.Value.Description;
+                channel.Metadata = ch.Value.Metadata;
+            }
+            else
+            {
+                channels.Add(ch.Key, new ChannelDescriptorBase
                 {
-                    channel.Enabled = ch.Value.Enabled;
-                    channel.Description = ch.Value.Description;
-                    channel.Metadata = ch.Value.Metadata;
-                }
-                else
-                {
-                    channels.Add(ch.Key, new ChannelDescriptorBase
-                    {
-                        Enabled = ch.Value.Enabled,
-                        Description = ch.Value.Description,
-                        Metadata = ch.Value.Metadata
-                    });
-                }
+                    Enabled = ch.Value.Enabled,
+                    Description = ch.Value.Description,
+                    Metadata = ch.Value.Metadata
+                });
             }
         }
-
+        
         return e with { LastUpdated = DateTimeOffset.UtcNow, Channels = channels };
     }
-
+    
     public static UserPreferences ToEntity(UserPreferencesDto dto)
     {
         var id = string.IsNullOrEmpty(dto.Id)
             ? ObjectId.GenerateNewId()
             : ObjectId.Parse(dto.Id);
-
+        
         return new UserPreferences
         {
             Id = id,
