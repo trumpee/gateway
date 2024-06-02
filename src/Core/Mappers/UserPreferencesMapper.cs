@@ -1,4 +1,5 @@
-﻿using Core.Models.UserPreferences;
+﻿using Core.Extensions;
+using Core.Models.UserPreferences;
 using Infrastructure.Persistence.Mongo.Entities.Preferences;
 using MongoDB.Bson;
 
@@ -26,7 +27,20 @@ public static class UserPreferencesMapper
         var channels = e.Channels;
         foreach (var ch in dto.Channels)
         {
-            if (channels.TryGetValue(ch.Key, out var channel))
+            for (var i = 0; i < ch.Value.Metadata?.Keys.Count; i++)
+            {
+                var key = ch.Value.Metadata.Keys.ElementAt(i);
+                var normalized = ch.Key.ToPascalCase();
+
+                if (!key.Equals(normalized))
+                {
+                    ch.Value.Metadata[normalized] = ch.Value.Metadata[key];
+                    ch.Value.Metadata.Remove(key);   
+                }
+            }
+
+            var normalizedKey = ch.Key.ToPascalCase();
+            if (channels.TryGetValue(normalizedKey, out var channel))
             {
                 channel.Enabled = ch.Value.Enabled;
                 channel.Description = ch.Value.Description;
@@ -34,7 +48,7 @@ public static class UserPreferencesMapper
             }
             else
             {
-                channels.Add(ch.Key, new ChannelDescriptorBase
+                channels.Add(normalizedKey, new ChannelDescriptorBase
                 {
                     Enabled = ch.Value.Enabled,
                     Description = ch.Value.Description,
