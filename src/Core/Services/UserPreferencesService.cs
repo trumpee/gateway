@@ -17,7 +17,7 @@ public class UserPreferencesService(
     private readonly IMongoRepository<UserPreferences> _userPreferencesRepository = userPreferencesRepository;
     private readonly ILogger<UserPreferencesService> _logger = logger;
     
-    public async Task<ErrorOr<UserPreferencesDto>> CreateUserPreferences(string userId)
+    public async Task<ErrorOr<UserPreferencesDto>> CreateUserPreferences(string userId, CancellationToken ct)
     {
         try
         {
@@ -39,19 +39,19 @@ public class UserPreferencesService(
         }
     }
     
-    public async Task<ErrorOr<UserPreferencesDto>> UpdateUserPreferences(string userId,
-        UserPreferencesDto userPreferences)
+    public async Task<ErrorOr<UserPreferencesDto>> UpdateUserPreferences(
+        UserPreferencesDto userPreferences, CancellationToken ct)
     {
         try
         {
-            var byUserIdSpec = new AdHocSpecification<UserPreferences>(x => x.UserId == userId);
+            var byUserIdSpec = new AdHocSpecification<UserPreferences>(x => x.UserId == userPreferences.UserId);
             var currentPreferences = await _userPreferencesRepository.FirstOrDefault(byUserIdSpec);
             if (currentPreferences is null)
             {
-                var result = await CreateUserPreferences(userId);
+                var result = await CreateUserPreferences(userPreferences.UserId, ct);
                 return result;
             }
-            
+
             var entity = UserPreferencesMapper.UpdateEntity(currentPreferences, userPreferences);
             await _userPreferencesRepository.Replace(entity);
             

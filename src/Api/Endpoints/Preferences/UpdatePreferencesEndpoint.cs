@@ -2,7 +2,6 @@
 using Api.Models.Requests.UserPreferences;
 using Api.Models.Responses;
 using Core.Abstractions;
-using Core.Services;
 using FastEndpoints;
 
 namespace Api.Endpoints.Preferences;
