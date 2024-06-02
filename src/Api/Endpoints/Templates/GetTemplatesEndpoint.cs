@@ -6,16 +6,11 @@ using FastEndpoints;
 
 namespace Api.Endpoints.Templates;
 
-internal sealed class GetTemplatesEndpoint :
+internal sealed class GetTemplatesEndpoint(ITemplatesService templatesService) :
     Endpoint<GetTemplatesRequest, ApiResponse<TemplateResponse[]>, GetTemplateMapper>
 {
-    private readonly ITemplatesService _templatesService;
-
-    public GetTemplatesEndpoint(ITemplatesService templatesService)
-    {
-        _templatesService = templatesService;
-    }
-
+    private readonly ITemplatesService _templatesService = templatesService;
+    
     public override void Configure()
     {
         Verbs(Http.GET);

@@ -5,15 +5,10 @@ using FastEndpoints;
 
 namespace Api.Endpoints.Templates;
 
-internal sealed class DeleteTemplatesEndpoint : Endpoint<DeleteTemplatesRequest>
+internal sealed class DeleteTemplatesEndpoint(ITemplatesService templatesService) : Endpoint<DeleteTemplatesRequest>
 {
-    private readonly ITemplatesService _templatesService;
-
-    public DeleteTemplatesEndpoint(ITemplatesService templatesService)
-    {
-        _templatesService = templatesService;
-    }
-
+    private readonly ITemplatesService _templatesService = templatesService;
+    
     public override void Configure()
     {
         Verbs(Http.DELETE);
