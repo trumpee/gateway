@@ -24,7 +24,7 @@ internal static class ErrorOrExtensions
         return ApiResponse<TResponse>.Success(templateResponse);
     }
 
-    private static IEnumerable<ProblemDetails.Error> ToProblemDetailsErrors<T>(this ErrorOr<T> errorOr)
+    internal static IEnumerable<ProblemDetails.Error> ToProblemDetailsErrors<T>(this ErrorOr<T> errorOr)
     {
         if (!errorOr.IsError)
             throw new ArgumentException("DU contains value, not error");

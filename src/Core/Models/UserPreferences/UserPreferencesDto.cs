@@ -1,4 +1,4 @@
-﻿namespace Core.Services;
+﻿namespace Core.Models.UserPreferences;
 
 public record UserPreferencesDto
 {

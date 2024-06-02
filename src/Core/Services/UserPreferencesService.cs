@@ -1,5 +1,7 @@
-﻿using Core.Errors;
+﻿using Core.Abstractions;
+using Core.Errors;
 using Core.Mappers;
+using Core.Models.UserPreferences;
 using ErrorOr;
 using Infrastructure.Persistence.Mongo.Abstractions;
 using Infrastructure.Persistence.Mongo.Entities.Preferences;

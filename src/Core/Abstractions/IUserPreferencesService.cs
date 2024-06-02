@@ -1,9 +1,11 @@
-﻿using ErrorOr;
+﻿using Core.Models.UserPreferences;
+using ErrorOr;
 
-namespace Core.Services;
+namespace Core.Abstractions;
 
 public interface IUserPreferencesService
 {
-    Task<ErrorOr<UserPreferencesDto>> CreateUserPreferences(string userId);
-    Task<ErrorOr<UserPreferencesDto>> UpdateUserPreferences(string userId, UserPreferencesDto userPreferences);
+    Task<ErrorOr<UserPreferencesDto>> CreateUserPreferences(string userId, CancellationToken ct);
+    Task<ErrorOr<UserPreferencesDto>> UpdateUserPreferences(
+        UserPreferencesDto userPreferences, CancellationToken ct);
 }

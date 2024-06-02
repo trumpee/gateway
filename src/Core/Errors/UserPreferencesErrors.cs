@@ -1,4 +1,5 @@
-﻿using Core.Services;
+﻿using Core.Models.UserPreferences;
+using Core.Services;
 using ErrorOr;
 
 namespace Core.Errors;

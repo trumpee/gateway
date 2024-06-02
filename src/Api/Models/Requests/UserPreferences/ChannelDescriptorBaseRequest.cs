@@ -1,6 +1,6 @@
-﻿namespace Core.Models.UserPreferences;
+﻿namespace Api.Models.Requests.UserPreferences;
 
-public record ChannelDescriptorBaseDto
+public record ChannelDescriptorBaseRequest
 {
     public bool Enabled { get; init; }
     public string? Description { get; init; }
