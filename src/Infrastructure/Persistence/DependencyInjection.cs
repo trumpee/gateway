@@ -26,6 +26,7 @@ public static class DependencyInjection
     {
         services.AddScoped<ITemplatesRepository, TemplatesRepository>();
         services.AddScoped<INotificationsRepository, NotificationsRepository>();
+        services.AddScoped<IUserPreferencesRepository, UserPreferencesRepository>();
         
         services.Configure<MongoDbOptions>(config.GetSection(MongoDbOptions.ConfigurationSectionName));
     }
