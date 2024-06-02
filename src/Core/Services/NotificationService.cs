@@ -22,6 +22,7 @@ internal class NotificationService(
 
         ct.ThrowIfCancellationRequested();
         await notificationsRepository.InsertOne(notification);
+        dto = dto with { Id = notification.Id.ToString() };
 
         var deliveryRequests = CreateDeliveryRequests(dto).ToList();
 
@@ -31,8 +32,7 @@ internal class NotificationService(
             await notificationsAnalyticsClient
                 .SendNotificationCreated(deliveryRequest.NotificationId, ct);
         }
-        
-        dto = dto with { Id = notification.Id.ToString() };
+
         return dto;
     }
 
