@@ -12,6 +12,7 @@ internal static class DeliveryRequestMapper
 
         return new Notification
         {
+            NotificationId = notification.Id!,
             Content = ContentNapper.ToContent(notification.Content),
             Priority = (Priority?)notification.Priority,
             Status = notification.Status,
