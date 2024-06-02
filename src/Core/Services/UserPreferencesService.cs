@@ -3,6 +3,7 @@ using Core.Errors;
 using Core.Mappers;
 using Core.Models.UserPreferences;
 using ErrorOr;
+using Infrastructure.Persistence.MassTransit.Analytics;
 using Infrastructure.Persistence.Mongo.Abstractions;
 using Infrastructure.Persistence.Mongo.Entities.Preferences;
 using Infrastructure.Persistence.Mongo.Specifications;
@@ -11,9 +12,11 @@ using Microsoft.Extensions.Logging;
 namespace Core.Services;
 
 public class UserPreferencesService(
+    IUserAnalyticsClient userAnalyticsClient,
     IMongoRepository<UserPreferences> userPreferencesRepository,
     ILogger<UserPreferencesService> logger) : IUserPreferencesService
 {
+    private readonly IUserAnalyticsClient _userAnalyticsClient = userAnalyticsClient;
     private readonly IMongoRepository<UserPreferences> _userPreferencesRepository = userPreferencesRepository;
     private readonly ILogger<UserPreferencesService> _logger = logger;
     
@@ -30,6 +33,10 @@ public class UserPreferencesService(
             var entity = UserPreferencesMapper.ToEntity(defaultPreferences);
             await _userPreferencesRepository.InsertOne(entity);
             
+            // here user mail should be sent
+            await _userAnalyticsClient.SendUserAction(
+                userId, "UserPreferencesCreated", "recipient", "User's Preferences", ct);
+
             return UserPreferencesMapper.ToDto(entity);
         }
         catch (Exception ex)
@@ -54,7 +61,11 @@ public class UserPreferencesService(
 
             var entity = UserPreferencesMapper.UpdateEntity(currentPreferences, userPreferences);
             await _userPreferencesRepository.Replace(entity);
-            
+
+            // here user mail should be sent
+            await _userAnalyticsClient.SendUserAction(
+                userPreferences.UserId, "UserPreferencesCreated", "recipient", "User's Preferences", ct);
+
             return UserPreferencesMapper.ToDto(entity);
         }
         catch (Exception ex)
