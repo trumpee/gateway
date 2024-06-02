@@ -2,7 +2,7 @@
 
 public record UserPreferences : MongoBaseEntity
 {
-    public required string UserId { get; set; }
-    public Dictionary<string, ChannelDescriptorBase>? Channels { get; set; }
-    public DateTimeOffset LastUpdated { get; set; }
+    public required string UserId { get; init; }
+    public required Dictionary<string, ChannelDescriptorBase> Channels { get; init; }
+    public DateTimeOffset LastUpdated { get; init; }
 }

@@ -1,17 +1,12 @@
 ﻿using Core.Errors;
 using Core.Mappers;
+using ErrorOr;
 using Infrastructure.Persistence.Mongo.Abstractions;
 using Infrastructure.Persistence.Mongo.Entities.Preferences;
+using Infrastructure.Persistence.Mongo.Specifications;
 using Microsoft.Extensions.Logging;
-using ErrorOr;
 
 namespace Core.Services;
-
-public interface IUserPreferencesService
-{
-    Task<ErrorOr<UserPreferencesDto>> CreateUserPreferences(string userId);
-    Task<UserPreferencesDto> UpdateUserPreferences(string userId, UserPreferencesDto userPreferences);
-}
 
 public class UserPreferencesService(
     IMongoRepository<UserPreferences> userPreferencesRepository,
@@ -32,7 +27,7 @@ public class UserPreferencesService(
             
             var entity = UserPreferencesMapper.ToEntity(defaultPreferences);
             await _userPreferencesRepository.InsertOne(entity);
-
+            
             return UserPreferencesMapper.ToDto(entity);
         }
         catch (Exception ex)
@@ -42,23 +37,28 @@ public class UserPreferencesService(
         }
     }
     
-    public Task<UserPreferencesDto> UpdateUserPreferences(string userId, UserPreferencesDto userPreferences)
+    public async Task<ErrorOr<UserPreferencesDto>> UpdateUserPreferences(string userId,
+        UserPreferencesDto userPreferences)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var byUserIdSpec = new AdHocSpecification<UserPreferences>(x => x.UserId == userId);
+            var currentPreferences = await _userPreferencesRepository.FirstOrDefault(byUserIdSpec);
+            if (currentPreferences is null)
+            {
+                var result = await CreateUserPreferences(userId);
+                return result;
+            }
+            
+            var entity = UserPreferencesMapper.UpdateEntity(currentPreferences, userPreferences);
+            await _userPreferencesRepository.Replace(entity);
+            
+            return UserPreferencesMapper.ToDto(entity);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to update user preferences");
+            return UserPreferencesErrors.FailedToUpdate;
+        }
     }
-}
-
-
-public record UserPreferencesDto
-{
-    public string? Id { get; init; }
-    public required string UserId { get; init; }
-    public required Dictionary<string, ChannelDescriptorBaseDto> Channels { get; init; }
-}
-
-public record ChannelDescriptorBaseDto
-{
-    public bool Enabled { get; init; }
-    public string? Description { get; init; }
-    public Dictionary<string, string>? Metadata { get; init; }
 }

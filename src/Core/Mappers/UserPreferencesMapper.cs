@@ -12,7 +12,7 @@ public class UserPreferencesMapper
         {
             Id = e.Id.ToString(),
             UserId = e.UserId,
-            Channels = e.Channels?.ToDictionary(x => x.Key, d => new ChannelDescriptorBaseDto
+            Channels = e.Channels.ToDictionary(x => x.Key, d => new ChannelDescriptorBaseDto
             {
                 Enabled = d.Value.Enabled,
                 Description = d.Value.Description,
@@ -21,6 +21,34 @@ public class UserPreferencesMapper
         };
     }
     
+    public static UserPreferences UpdateEntity(UserPreferences e, UserPreferencesDto dto)
+    {
+        var channels = e.Channels;
+        if (channels.Count > 0)
+        {
+            foreach (var ch in dto.Channels)
+            {
+                if (channels.TryGetValue(ch.Key, out var channel))
+                {
+                    channel.Enabled = ch.Value.Enabled;
+                    channel.Description = ch.Value.Description;
+                    channel.Metadata = ch.Value.Metadata;
+                }
+                else
+                {
+                    channels.Add(ch.Key, new ChannelDescriptorBase
+                    {
+                        Enabled = ch.Value.Enabled,
+                        Description = ch.Value.Description,
+                        Metadata = ch.Value.Metadata
+                    });
+                }
+            }
+        }
+
+        return e with { LastUpdated = DateTimeOffset.UtcNow, Channels = channels };
+    }
+
     public static UserPreferences ToEntity(UserPreferencesDto dto)
     {
         var id = string.IsNullOrEmpty(dto.Id)
@@ -36,7 +64,8 @@ public class UserPreferencesMapper
                 Enabled = d.Value.Enabled,
                 Description = d.Value.Description,
                 Metadata = d.Value.Metadata
-            })
+            }),
+            LastUpdated = DateTimeOffset.UtcNow
         };
     }
 }
