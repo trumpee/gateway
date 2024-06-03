@@ -27,15 +27,15 @@ public static class UserPreferencesMapper
         var channels = e.Channels;
         foreach (var ch in dto.Channels)
         {
-            for (var i = 0; i < ch.Value.Metadata?.Keys.Count; i++)
+            var metadataKeys = ch.Value.Metadata?.Keys.ToArray()!;
+            foreach (var mk in metadataKeys)
             {
-                var key = ch.Value.Metadata.Keys.ElementAt(i);
-                var normalized = ch.Key.ToPascalCase();
+                var normalized = mk.ToPascalCase();
 
-                if (!key.Equals(normalized))
+                if (!mk.Equals(normalized))
                 {
-                    ch.Value.Metadata[normalized] = ch.Value.Metadata[key];
-                    ch.Value.Metadata.Remove(key);   
+                    ch.Value.Metadata![normalized] = ch.Value.Metadata[mk];
+                    ch.Value.Metadata.Remove(mk);
                 }
             }
 
