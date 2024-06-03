@@ -1,5 +1,6 @@
 ﻿using Core.Abstractions;
 using Core.Errors;
+using Core.Extensions;
 using Core.Mappers;
 using Core.Models.UserPreferences;
 using ErrorOr;
@@ -73,5 +74,23 @@ public class UserPreferencesService(
             _logger.LogError(ex, "Failed to update user preferences");
             return UserPreferencesErrors.FailedToUpdate;
         }
+    }
+    
+    public async Task<ErrorOr<ChannelDescriptorBaseDto>> GetChannelDeliveryInfo(
+        string recipientUserId, string channel, CancellationToken ct)
+    {
+        var byUserId = new AdHocSpecification<UserPreferences>(
+            x => x.UserId == recipientUserId);
+        var currentUserPreferences = await _userPreferencesRepository.FirstOrDefault(byUserId);
+        if (currentUserPreferences is null)
+        {
+            return UserPreferencesErrors.ChannelNotFound;
+        }
+
+        var channelKey = channel.ToPascalCase();
+        var channelDescriptor = currentUserPreferences.Channels.GetValueOrDefault(channelKey);
+        return channelDescriptor is null
+            ? UserPreferencesErrors.ChannelNotFound
+            : UserPreferencesChannelMapper.ToDto(channelDescriptor);
     }
 }

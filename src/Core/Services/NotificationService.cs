@@ -11,6 +11,7 @@ namespace Core.Services;
 
 internal class NotificationService(
         ITemplateFillerClient massTransitClient,
+        IUserPreferencesService userPreferencesService,
         INotificationsAnalyticsClient notificationsAnalyticsClient,
         INotificationsRepository notificationsRepository)
     : INotificationsService
@@ -24,7 +25,7 @@ internal class NotificationService(
         await notificationsRepository.InsertOne(notification);
         dto = dto with { Id = notification.Id.ToString() };
 
-        var deliveryRequests = CreateDeliveryRequests(dto).ToList();
+        var deliveryRequests = await CreateDeliveryRequests(dto, ct);
 
         await massTransitClient.SendMessages(deliveryRequests, string.Empty);
         foreach (var deliveryRequest in deliveryRequests)
@@ -36,10 +37,35 @@ internal class NotificationService(
         return dto;
     }
 
-    private IEnumerable<Notification> CreateDeliveryRequests(NotificationDto dto)
+    private async Task<List<Notification>> CreateDeliveryRequests(NotificationDto dto, CancellationToken ct)
     {
-        return dto.Recipients!
+        return await dto.Recipients!
+            .ToAsyncEnumerable()
             .Select(recipient => Mappers.External.DeliveryRequestMapper.ToRequest(dto, recipient))
-            .ToList();
+            .SelectAwait(deliveryRequest => PopulateDeliveryInfo(deliveryRequest, ct))
+            .ToListAsync(cancellationToken: ct);
+    }
+
+    private async ValueTask<Notification> PopulateDeliveryInfo(Notification notification, CancellationToken ct)
+    {
+        ct.ThrowIfCancellationRequested();
+
+        var channel = notification.Recipient.Channel;
+        var deliveryInfo = await userPreferencesService
+            .GetChannelDeliveryInfo(notification.Recipient.UserId, channel, ct);
+        if (deliveryInfo.IsError)
+        {
+            return notification;
+        }
+
+        notification = notification with
+        {
+            Recipient = notification.Recipient with
+            {
+                DeliveryInfo = deliveryInfo.Value
+            }
+        };
+
+        return notification;
     }
 }

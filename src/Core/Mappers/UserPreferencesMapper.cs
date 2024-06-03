@@ -5,6 +5,29 @@ using MongoDB.Bson;
 
 namespace Core.Mappers;
 
+public static class UserPreferencesChannelMapper
+{
+    public static ChannelDescriptorBaseDto ToDto(ChannelDescriptorBase e)
+    {
+        return new ChannelDescriptorBaseDto
+        {
+            Enabled = e.Enabled,
+            Description = e.Description,
+            Metadata = e.Metadata
+        };
+    }
+    
+    public static ChannelDescriptorBase ToEntity(ChannelDescriptorBaseDto dto)
+    {
+        return new ChannelDescriptorBase
+        {
+            Enabled = dto.Enabled,
+            Description = dto.Description,
+            Metadata = dto.Metadata
+        };
+    }
+}
+
 public static class UserPreferencesMapper
 {
     internal static UserPreferencesDto ToDto(UserPreferences e)
@@ -13,12 +36,7 @@ public static class UserPreferencesMapper
         {
             Id = e.Id.ToString(),
             UserId = e.UserId,
-            Channels = e.Channels.ToDictionary(x => x.Key, d => new ChannelDescriptorBaseDto
-            {
-                Enabled = d.Value.Enabled,
-                Description = d.Value.Description,
-                Metadata = d.Value.Metadata
-            })
+            Channels = e.Channels.ToDictionary(x => x.Key, d => UserPreferencesChannelMapper.ToDto(d.Value))
         };
     }
     
@@ -70,12 +88,7 @@ public static class UserPreferencesMapper
         {
             Id = id,
             UserId = dto.UserId,
-            Channels = dto.Channels.ToDictionary(x => x.Key, d => new ChannelDescriptorBase
-            {
-                Enabled = d.Value.Enabled,
-                Description = d.Value.Description,
-                Metadata = d.Value.Metadata
-            }),
+            Channels = dto.Channels.ToDictionary(x => x.Key, d => UserPreferencesChannelMapper.ToEntity(d.Value)),
             LastUpdated = DateTimeOffset.UtcNow
         };
     }
