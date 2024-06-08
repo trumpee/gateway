@@ -6,16 +6,11 @@ using FastEndpoints;
 
 namespace Api.Endpoints.Templates;
 
-internal sealed class UpdateTemplateEndpoint :
+internal sealed class UpdateTemplateEndpoint(ITemplatesService templatesService) :
     Endpoint<UpdateTemplateRequest, ApiResponse<TemplateResponse>, UpdateTemplateMapper>
 {
-    private readonly ITemplatesService _templatesService;
-
-    public UpdateTemplateEndpoint(ITemplatesService templatesService)
-    {
-        _templatesService = templatesService;
-    }
-
+    private readonly ITemplatesService _templatesService = templatesService;
+    
     public override void Configure()
     {
         Verbs(Http.PUT);

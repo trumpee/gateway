@@ -6,16 +6,11 @@ using FastEndpoints;
 
 namespace Api.Endpoints.Templates;
 
-internal sealed class CreateTemplateEndpoint :
+internal sealed class CreateTemplateEndpoint(ITemplatesService templatesService) :
     Endpoint<CreateTemplateRequest, ApiResponse<TemplateResponse>, CreateTemplatesMapper>
 {
-    private readonly ITemplatesService _templatesService;
-
-    public CreateTemplateEndpoint(ITemplatesService templatesService)
-    {
-        _templatesService = templatesService;
-    }
-
+    private readonly ITemplatesService _templatesService = templatesService;
+    
     public override void Configure()
     {
         Verbs(Http.POST);

@@ -5,18 +5,13 @@ using Trumpee.MassTransit.Messages.Notifications;
 
 namespace Infrastructure.Persistence.MassTransit;
 
-public class TemplateFillerClient :
-    MassTransitClient<Notification>, ITemplateFillerClient
+public class TemplateFillerClient(ISendEndpointProvider endpointProvider) :
+    MassTransitClient<Notification>(endpointProvider), ITemplateFillerClient
 {
-    public TemplateFillerClient(ISendEndpointProvider endpointProvider) :
-        base(endpointProvider)
-    {
-    }
-
     public new Task SendMessages(
         IEnumerable<Notification> messages,
         string _)
     {
-        return base.SendMessages(messages, QueueNames.TemplateFillerQueueName);
+        return base.SendMessages(messages, QueueNames.Services.TemplateFillerQueueName);
     }
 }

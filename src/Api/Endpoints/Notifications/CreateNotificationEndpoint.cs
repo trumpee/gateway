@@ -6,16 +6,11 @@ using FastEndpoints;
 
 namespace Api.Endpoints.Notifications;
 
-internal sealed class CreateNotificationEndpoint :
+internal sealed class CreateNotificationEndpoint(INotificationsService notificationsService) :
     Endpoint<CreateNotificationRequest, ApiResponse<NotificationResponse>, CreateNotificationMapper>
 {
-    private readonly INotificationsService _notificationsService;
-
-    public CreateNotificationEndpoint(INotificationsService notificationsService)
-    {
-        _notificationsService = notificationsService;
-    }
-
+    private readonly INotificationsService _notificationsService = notificationsService;
+    
     public override void Configure()
     {
         Verbs(Http.POST);

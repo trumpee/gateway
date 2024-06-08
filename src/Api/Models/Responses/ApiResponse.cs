@@ -2,7 +2,7 @@
 
 namespace Api.Models.Responses;
 
-internal record ApiResponse
+public record ApiResponse
 {
     protected ApiResponse()
     {
@@ -23,7 +23,7 @@ internal record ApiResponse
     }
 }
 
-internal record ApiResponse<TData> : ApiResponse
+public record ApiResponse<TData> : ApiResponse
 {
     public TData? Data { get; init; }
 
