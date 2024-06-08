@@ -1,5 +1,6 @@
 ﻿using Api.Models.Requests.Auth;
 using Api.Models.Responses;
+using Core.Abstractions;
 using FastEndpoints;
 using Infrastructure.Auth0.Abstractions;
 using Infrastructure.Auth0.Models;
@@ -8,10 +9,12 @@ namespace Api.Endpoints.Auth;
 
 public class RegisterEndpoint(
     IAuthService authService,
+    IUserPreferencesService userPreferencesService,
     ILogger<RegisterEndpoint> logger)
     : Endpoint<RegisterRequest, ApiResponse<UserInfoResponse>>
 {
     private readonly IAuthService _authService = authService;
+    private readonly IUserPreferencesService _userPreferencesService = userPreferencesService;
     private readonly ILogger<RegisterEndpoint> _logger = logger;
 
     public override void Configure()
@@ -35,6 +38,8 @@ public class RegisterEndpoint(
             }
             else
             {
+                await _userPreferencesService.CreateUserPreferences(registrationResponse.UserId, ct);
+
                 var tokenInfo = new UserTokenResponse(
                     registrationResponse.TokenInfo.Token,
                     registrationResponse.TokenInfo.ExpiresIn);

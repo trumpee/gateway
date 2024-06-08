@@ -11,5 +11,6 @@ public static class DependencyInjection
     {
         services.AddScoped<ITemplatesService, TemplatesService>();
         services.AddScoped<INotificationsService, NotificationService>();
+        services.AddScoped<IUserPreferencesService, UserPreferencesService>();
     }
 }

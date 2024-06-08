@@ -8,7 +8,7 @@ using MongoDB.Driver;
 
 namespace Infrastructure.Persistence.Mongo.Repositories;
 
-internal abstract class MongoDbRepositoryBase<T> : IMongoRepository<T>
+public abstract class MongoDbRepositoryBase<T> : IMongoRepository<T>
     where T : Entities.MongoBaseEntity
 {
     protected readonly IMongoCollection<T> Collection;

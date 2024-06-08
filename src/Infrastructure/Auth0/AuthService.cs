@@ -58,40 +58,51 @@ public class AuthService(
     {
         try
         {
-            var username = $"{req.FullName[0]}-{Guid.NewGuid().ToString()[..6]}".ToLower();
-            await _auth0Client.SignupUserAsync(new SignupUserRequest
-            {
-                Username = username,
-                Nickname = username,
-                Name = req.FullName ,
-                Password = req.Password,
-                Email = req.Email,
+            var userId = await CreateAuth0Account(req, ct);
+            await _userAnalyticsClient.SendUserSignUp(userId, req.Email, req.FullName, "recipient", ct);
 
-                UserMetadata = new Dictionary<string, object>
-                {
-                    ["trumpee_uid"] = username
-                },
-
-                Connection =_auth0Options.Realm,
-                ClientId = _auth0Options.ClientId
-            }, ct);
-
-            // By now, all users registered are recipients.
-            // Administrators are created manually via Auth0 management console.
-            await _userAnalyticsClient.SendUserSignUp(username, req.Email, req.FullName, "recipient", ct);
-            var tokenInfo = await GetUserToken(new LoginRequestDto(req.Email, req.Password), ct);
-            if (tokenInfo is null)
-            {
-                _logger.LogWarning("Failed to register user {Login}", req.Login);
-                return null;
-            }
-
-            return new UserInfoDto(username, tokenInfo);
+            var tokenInfo = await SignInUserInternal(req, ct);
+            return new UserInfoDto(userId, tokenInfo!);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to register user {Login}", req.Login);
             return null;
         }
+    }
+    
+    private async Task<string> CreateAuth0Account(RegisterRequestDto req, CancellationToken ct)
+    {
+        var username = $"{req.FullName[0]}-{Guid.NewGuid().ToString()[..6]}".ToLower();
+        await _auth0Client.SignupUserAsync(new SignupUserRequest
+        {
+            Username = username,
+            Nickname = username,
+            Name = req.FullName ,
+            Password = req.Password,
+            Email = req.Email,
+            
+            UserMetadata = new Dictionary<string, object>
+            {
+                ["trumpee_uid"] = username
+            },
+            
+            Connection =_auth0Options.Realm,
+            ClientId = _auth0Options.ClientId
+        }, ct);
+
+        return username;
+    }
+    
+    private async Task<TokenInfoDto?> SignInUserInternal(RegisterRequestDto req, CancellationToken ct)
+    {
+        var tokenInfo = await GetUserToken(new LoginRequestDto(req.Email, req.Password), ct);
+        if (tokenInfo is null)
+        {
+            _logger.LogWarning("Failed to login recently registered user {Login}", req.Login);
+            return tokenInfo;
+        }
+        
+        return tokenInfo;
     }
 }
